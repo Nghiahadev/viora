@@ -1,0 +1,159 @@
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      <li>
+        {%- if link.links != blank -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+              <summary
+                id="HeaderMenu-{{ link.handle }}"
+                class="header__menu-item list-menu__item link focus-inset"
+              >
+                <span>{{ link.title | escape }}</span>
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </summary>
+
+              {%- if link.title == 'Shop' -%}
+                <div class="mega-menu__content custom-viora-mega color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup" tabindex="-1">
+                  <div class="custom-viora-left">
+                    {%- for childlink in link.links -%}
+                      {%- assign child_collection = childlink.object -%}
+                      <button class="custom-viora-collection{% if forloop.first %} active{% endif %}" data-collection="{{ childlink.handle }}" type="button">
+                        {%- if child_collection.image -%}
+                          <img src="{{ child_collection.image | image_url: width: 100 }}" alt="{{ childlink.title | escape }}" loading="lazy">
+                        {%- endif -%}
+                        <span>{{ childlink.title | escape }}</span>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+
+                  <div class="custom-viora-right">
+                    {%- for childlink in link.links -%}
+                      {%- assign child_collection = childlink.object -%}
+                      <div class="mega-product-group{% if forloop.first %} active{% endif %}" data-products="{{ childlink.handle }}">
+                        {%- if child_collection.products_count > 0 -%}
+                          {%- for product in child_collection.products limit: 4 -%}
+                            <a href="{{ product.url }}" class="custom-viora-product">
+                              {%- if product.featured_image -%}
+                                <img src="{{ product.featured_image | image_url: width: 360 }}" alt="{{ product.title | escape }}" loading="lazy">
+                              {%- endif -%}
+                              <p>{{ product.title }}</p>
+                            </a>
+                          {%- endfor -%}
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                </div>
+
+              {%- elsif link.title == 'Featured Brands' -%}
+                <div class="mega-menu__content custom-brand-mega color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup" tabindex="-1">
+                  <div class="custom-brand-grid">
+                    {%- for childlink in link.links -%}
+                      {%- assign brand_collection = childlink.object -%}
+                      <a href="{{ childlink.url }}" class="custom-brand-card">
+                        {% if brand_collection.image %}
+                          <img src="{{ brand_collection.image | image_url: width: 900 }}" alt="{{ childlink.title | escape }}" loading="lazy">
+                        {% endif %}
+                        <div class="custom-brand-overlay">
+                          <h3>{{ childlink.title }}</h3>
+                          {% if brand_collection.description != blank %}
+                            <p>{{ brand_collection.description | strip_html | truncate: 70 }}</p>
+                          {% endif %}
+                          <span>Explore Brand</span>
+                        </div>
+                      </a>
+                    {%- endfor -%}
+                  </div>
+                </div>
+
+              {%- elsif link.title == 'About Us' -%}
+                <div class="mega-menu__content custom-about-mega color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup" tabindex="-1">
+                  <div class="custom-about-wrap">
+                    <div class="custom-about-links">
+                      {%- for childlink in link.links -%}
+                        <a href="{{ childlink.url }}" class="custom-about-link">
+                          {{ childlink.title | escape }}
+                        </a>
+                      {%- endfor -%}
+                    </div>
+
+                    <a href="/pages/about-us" class="custom-about-image-card">
+                      <img
+                        src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/viora_ube_3.png?v=1778797159"
+                        alt="VIORA Creamery"
+                        loading="lazy"
+                      >
+                      <div class="custom-about-overlay">
+                        <h3>Discover VIORA</h3>
+                        <p>Our story, our brand, and delicious recipes.</p>
+                        <span>Learn More</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+              {%- else -%}
+                <div class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup" tabindex="-1">
+                  <ul class="mega-menu__list page-width" role="list">
+                    {%- for childlink in link.links -%}
+                      <li>
+                        <a
+                          id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                          href="{{ childlink.url }}"
+                          class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                          {% if childlink.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          {{ childlink.title | escape }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+            </details>
+          </header-menu>
+
+        {%- else -%}
+          <a
+            id="HeaderMenu-{{ link.handle }}"
+            href="{{ link.url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            <span>{{ link.title | escape }}</span>
+          </a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.custom-viora-mega').forEach(function(menu) {
+    const buttons = menu.querySelectorAll('.custom-viora-collection');
+    const groups = menu.querySelectorAll('.mega-product-group');
+
+    buttons.forEach(function(button) {
+      button.addEventListener('mouseenter', function () {
+        const collection = this.dataset.collection;
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+
+        groups.forEach(function(group) {
+          group.classList.remove('active');
+          if (group.dataset.products === collection) {
+            group.classList.add('active');
+          }
+        });
+      });
+    });
+  });
+});
+</script>
