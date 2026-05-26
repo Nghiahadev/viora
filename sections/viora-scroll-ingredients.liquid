@@ -1,0 +1,486 @@
+<style>
+.viora-scroll-ingredients {
+  min-height: 400vh; /* Increased slightly to give the scroll animation more breathing room */
+  background: {{ section.settings.bg_color }};
+}
+
+.viora-scroll-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 520px 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 80px 6%;
+  overflow: hidden;
+}
+
+.viora-info-left,
+.viora-info-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.viora-main-product {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 620px;
+}
+
+.viora-product-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.viora-main-product-img {
+  width: 100%;
+  max-width: 430px;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 3;
+  filter: drop-shadow(0 25px 35px rgba(0,0,0,.16));
+}
+
+.viora-ingredient-stack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Position floating images directly over the center workspace */
+.viora-floating-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  width: 130px;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,.12));
+}
+
+.viora-info-card {
+  background: #ffffff;
+  border: 1px solid #dce8cf;
+  border-radius: 22px;
+  padding: 20px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.06);
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.viora-info-card h3 {
+  margin: 0 0 8px;
+  color: {{ section.settings.title_color }};
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.viora-info-card p {
+  margin: 0;
+  color: {{ section.settings.text_color }};
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.viora-nutrition {
+  background: #fff;
+  border: 4px solid {{ section.settings.title_color }};
+  border-radius: 22px;
+  padding: 22px;
+  color: {{ section.settings.title_color }};
+  opacity: 0;
+  transform: translateX(60px);
+}
+
+.viora-nutrition h2 {
+  font-size: 38px;
+  line-height: 1;
+  margin: 0 0 12px;
+  font-weight: 900;
+}
+
+.viora-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d3ddca;
+  padding: 8px 0;
+  font-size: 15px;
+}
+
+.viora-line {
+  height: 8px;
+  background: {{ section.settings.title_color }};
+  margin: 12px 0;
+}
+
+.viora-calories {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.viora-calories span {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.viora-calories strong {
+  font-size: 52px;
+}
+
+@media screen and (max-width: 900px) {
+  .viora-scroll-ingredients {
+    min-height: auto;
+  }
+
+  .viora-scroll-sticky {
+    position: relative;
+    height: auto;
+    grid-template-columns: 1fr;
+    padding: 50px 20px;
+    gap: 30px;
+  }
+
+  .viora-main-product {
+    min-height: auto;
+    padding-top: 40px;
+  }
+
+  .viora-ingredient-stack {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .viora-floating-img {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none !important;
+    opacity: 1 !important;
+    width: 80px;
+  }
+
+  .viora-info-card,
+  .viora-nutrition {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .viora-nutrition h2 {
+    font-size: 34px;
+  }
+
+  .viora-calories strong {
+    font-size: 46px;
+  }
+}
+</style>
+
+<section class="viora-scroll-ingredients" id="viora-scroll-{{ section.id }}">
+  <div class="viora-scroll-sticky">
+
+    <div class="viora-info-left">
+      {% for block in section.blocks limit: 3 %}
+        <div class="viora-info-card" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="viora-main-product">
+      <div class="viora-product-wrap">
+
+        <div class="viora-ingredient-stack">
+          {% for block in section.blocks %}
+            {% if block.settings.image != blank %}
+              <img
+                class="viora-floating-img"
+                data-img-index="{{ forloop.index0 }}"
+                src="{{ block.settings.image | image_url: width: 350 }}"
+                alt="{{ block.settings.title | escape }}"
+              >
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if section.settings.main_image != blank %}
+          <img
+            class="viora-main-product-img"
+            src="{{ section.settings.main_image | image_url: width: 900 }}"
+            alt="{{ section.settings.heading | escape }}"
+          >
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class="viora-info-right">
+      <div class="viora-nutrition">
+        <h2>Nutrition Facts</h2>
+
+        <div class="viora-row">
+          <span>Serving Size</span>
+          <strong>{{ section.settings.serving_size }}</strong>
+        </div>
+
+        <div class="viora-line"></div>
+
+        <div class="viora-calories">
+          <span>Calories</span>
+          <strong>{{ section.settings.calories }}</strong>
+        </div>
+
+        <div class="viora-line"></div>
+
+        <div class="viora-row"><span>Total Fat</span><strong>{{ section.settings.fat }}</strong></div>
+        <div class="viora-row"><span>Saturated Fat</span><strong>{{ section.settings.saturated_fat }}</strong></div>
+        <div class="viora-row"><span>Sodium</span><strong>{{ section.settings.sodium }}</strong></div>
+        <div class="viora-row"><span>Carbohydrate</span><strong>{{ section.settings.carbs }}</strong></div>
+        <div class="viora-row"><span>Sugar</span><strong>{{ section.settings.sugar }}</strong></div>
+        <div class="viora-row"><span>Protein</span><strong>{{ section.settings.protein }}</strong></div>
+        <div class="viora-row"><span>Calcium</span><strong>{{ section.settings.calcium }}</strong></div>
+      </div>
+
+      {% for block in section.blocks offset: 3 %}
+        <div class="viora-info-card" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Responsive check
+  if (window.innerWidth <= 900) return;
+
+  const sectionId = "#viora-scroll-{{ section.id }}";
+  const cards = document.querySelectorAll(sectionId + " .viora-info-card");
+  
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: sectionId,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 1
+    }
+  });
+
+  // 1. First, smoothly slide in the Nutrition Facts table
+  tl.to(sectionId + " .viora-nutrition", {
+    opacity: 1,
+    x: 0,
+    duration: 0.8
+  });
+
+  // 2. Loop dynamically through your data blocks to match up ingredients and info-cards
+  cards.forEach((card, index) => {
+    const idx = card.getAttribute('data-index');
+    const matchedImg = document.querySelector(sectionId + ` .viora-floating-img[data-img-index="${idx}"]`);
+    
+    // Custom explosion offsets based on which item index it is
+    let targetY = "-120px";
+    let targetX = "0px";
+    
+    if (idx == 0) { targetY = "-240px"; targetX = "-20px"; }
+    if (idx == 1) { targetY = "-150px"; targetX = "10px"; }
+    if (idx == 2) { targetY = "-40px";  targetX = "-30px"; }
+    if (idx == 3) { targetY = "60px";   targetX = "20px"; }
+
+    // Animate matching info card and ingredient image at the same time
+    tl.to(card, {
+      opacity: 1,
+      y: 0,
+      duration: 1
+    }, `step-${index}`)
+    .to(matchedImg, {
+      opacity: 1,
+      x: targetX,
+      y: targetY,
+      scale: 1,
+      duration: 1
+    }, `step-${index}`);
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Viora Scroll Ingredients",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Matcha Lavender Yogurt"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main product image"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#18380f"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#4e6344"
+    },
+    {
+      "type": "text",
+      "id": "serving_size",
+      "label": "Serving size",
+      "default": "1 Jar"
+    },
+    {
+      "type": "text",
+      "id": "calories",
+      "label": "Calories",
+      "default": "160"
+    },
+    {
+      "type": "text",
+      "id": "fat",
+      "label": "Total fat",
+      "default": "6g"
+    },
+    {
+      "type": "text",
+      "id": "saturated_fat",
+      "label": "Saturated fat",
+      "default": "3.5g"
+    },
+    {
+      "type": "text",
+      "id": "sodium",
+      "label": "Sodium",
+      "default": "55mg"
+    },
+    {
+      "type": "text",
+      "id": "carbs",
+      "label": "Carbohydrate",
+      "default": "18g"
+    },
+    {
+      "type": "text",
+      "id": "sugar",
+      "label": "Sugar",
+      "default": "15g"
+    },
+    {
+      "type": "text",
+      "id": "protein",
+      "label": "Protein",
+      "default": "9g"
+    },
+    {
+      "type": "text",
+      "id": "calcium",
+      "label": "Calcium",
+      "default": "20%"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Ingredient image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ingredient title",
+          "default": "Matcha Powder"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Ingredient text",
+          "default": "Premium ingredient with natural flavor and smooth taste."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Viora Scroll Ingredients",
+      "blocks": [
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Matcha Powder",
+            "text": "Earthy green tea powder with a smooth natural flavor."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Lavender",
+            "text": "Light floral aroma that gives the yogurt a calming taste."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Creamy Yogurt",
+            "text": "Rich and smooth yogurt base with a soft creamy texture."
+          }
+        },
+        {
+          "type": "ingredient",
+          "settings": {
+            "title": "Matcha Sauce",
+            "text": "A sweet matcha layer that blends with the yogurt perfectly."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

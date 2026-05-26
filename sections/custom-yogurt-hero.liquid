@@ -1,0 +1,749 @@
+<section class="viora-hero viora-hero-{{ section.id }}">
+  <div class="viora-bg"></div>
+
+  <div class="viora-container">
+    <div class="viora-left">
+      <p class="viora-eyebrow">{{ section.settings.eyebrow }}</p>
+
+      <h1>{{ section.settings.heading }}</h1>
+
+      <p class="viora-desc">{{ section.settings.description }}</p>
+
+      <div class="viora-badges">
+        <span>High Protein</span>
+        <span>Low Sugar</span>
+        <span>Live Cultures</span>
+      </div>
+
+      <div class="viora-flavors">
+        {% for block in section.blocks %}
+          {% assign flavor_product = block.settings.product %}
+
+          <button
+            class="viora-flavor {% if forloop.first %}active{% endif %}"
+            type="button"
+            data-product-image="{% if flavor_product.featured_image != blank %}{{ flavor_product.featured_image | image_url: width: 1000 }}{% endif %}"
+            data-product-title="{{ flavor_product.title | escape }}"
+            data-product-price="{{ flavor_product.price | money }}"
+            data-product-url="{{ flavor_product.url }}"
+            data-product-description="{{ flavor_product.description | strip_html | truncate: 140 | escape }}"
+          >
+            <span>{{ block.settings.flavor_name }}</span>
+            <span class="viora-arrow">→</span>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="viora-right">
+      {% assign first_block = section.blocks.first %}
+      {% assign first_product = first_block.settings.product %}
+
+      <div class="viora-circle">
+        <span>Smooth</span>
+        <span>Creamy</span>
+        <span>Balanced</span>
+      </div>
+
+      {% if first_product.featured_image != blank %}
+        <img
+          class="viora-product"
+          id="VioraProduct-{{ section.id }}"
+          src="{{ first_product.featured_image | image_url: width: 1000 }}"
+          alt="{{ first_product.title | escape }}"
+        >
+      {% endif %}
+
+      <button class="viora-plus" id="VioraPlus-{{ section.id }}" type="button">+</button>
+
+      <div class="viora-product-card" id="VioraCard-{{ section.id }}">
+        <button class="viora-card-close" type="button">×</button>
+
+        <img
+          id="VioraCardImage-{{ section.id }}"
+          src="{% if first_product.featured_image != blank %}{{ first_product.featured_image | image_url: width: 400 }}{% endif %}"
+          alt=""
+        >
+
+        <h3 id="VioraCardTitle-{{ section.id }}">{{ first_product.title }}</h3>
+
+        <p class="viora-card-price" id="VioraCardPrice-{{ section.id }}">
+          {{ first_product.price | money }}
+        </p>
+
+        <p class="viora-card-desc" id="VioraCardDesc-{{ section.id }}">
+          {{ first_product.description | strip_html | truncate: 140 }}
+        </p>
+
+        <a class="viora-card-btn" id="VioraCardLink-{{ section.id }}" href="{{ first_product.url }}">
+          View Product
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.viora-hero-{{ section.id }} {
+  position: relative;
+  overflow: hidden;
+  padding: 90px 5%;
+  min-height: 720px;
+  color: #111;
+  background:
+    radial-gradient(circle at 75% 45%, rgba(240,189,89,0.16), transparent 34%),
+    linear-gradient(120deg, #fff8ec 0%, #f8ecd9 48%, #ead7ba 100%);
+}
+
+.viora-hero-{{ section.id }} .viora-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,248,236,0.97) 0%,
+      rgba(255,248,236,0.88) 42%,
+      rgba(234,215,186,0.55) 100%
+    )
+    {% if section.settings.background_image != blank %}
+    , url({{ section.settings.background_image | image_url: width: 2000 }})
+    {% endif %};
+  background-size: cover;
+  background-position: center right;
+  pointer-events: none;
+}
+
+.viora-hero-{{ section.id }} .viora-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1350px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  align-items: center;
+  gap: 48px;
+}
+
+.viora-hero-{{ section.id }} .viora-eyebrow {
+  display: inline-flex;
+  padding: 8px 16px;
+  border: 1px solid #f0bd59;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.58);
+  color: #7b551c;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 18px;
+}
+
+.viora-hero-{{ section.id }} .viora-left h1 {
+  max-width: 620px;
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 0.92;
+  margin: 0 0 24px;
+  color: #0d0d0d;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+
+.viora-hero-{{ section.id }} .viora-desc {
+  max-width: 610px;
+  font-size: 18px;
+  line-height: 1.55;
+  margin: 0 0 28px;
+  color: #1c1c1c;
+  font-weight: 500;
+}
+
+.viora-hero-{{ section.id }} .viora-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.viora-hero-{{ section.id }} .viora-badges span {
+  padding: 10px 15px;
+  border: 1px solid rgba(240,189,89,0.58);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.62);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.viora-hero-{{ section.id }} .viora-flavors {
+  width: min(490px, 100%);
+  border: 1px solid rgba(240,189,89,0.35);
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.65);
+  box-shadow: 0 18px 50px rgba(71,45,10,0.08);
+  backdrop-filter: blur(10px);
+}
+
+.viora-hero-{{ section.id }} .viora-flavor {
+  width: 100%;
+  min-height: 64px;
+  padding: 0 24px;
+  border: 0;
+  border-bottom: 1px solid rgba(240,189,89,0.2);
+  background: transparent;
+  color: #111;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 19px;
+  font-weight: 900;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.viora-hero-{{ section.id }} .viora-flavor:last-child {
+  border-bottom: none;
+}
+
+.viora-hero-{{ section.id }} .viora-flavor.active,
+.viora-hero-{{ section.id }} .viora-flavor:hover {
+  background: #f0bd59 !important;
+  color: #050505 !important;
+}
+
+.viora-hero-{{ section.id }} .viora-arrow {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.viora-hero-{{ section.id }} .viora-right {
+  position: relative;
+  min-height: 620px;
+}
+
+.viora-hero-{{ section.id }} .viora-product {
+  position: absolute;
+  right: 10%;
+  top: 20px;
+  width: min(520px, 88%);
+  max-height: 560px;
+  object-fit: contain;
+  z-index: 3;
+  filter: drop-shadow(0 35px 45px rgba(54,34,9,0.35));
+  animation: vioraFloat-{{ section.id }} 4.2s ease-in-out infinite;
+  transition: opacity 0.25s ease;
+}
+
+.viora-hero-{{ section.id }} .viora-circle {
+  position: absolute;
+  right: 0;
+  top: 70px;
+  width: 128px;
+  height: 128px;
+  border: 1px solid #f0bd59;
+  border-radius: 50%;
+  background: rgba(255,248,236,0.82);
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.35;
+  z-index: 5;
+  box-shadow: 0 12px 35px rgba(71,45,10,0.08);
+}
+
+.viora-hero-{{ section.id }} .viora-plus {
+  position: absolute;
+  left: 43%;
+  top: 48%;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 3px solid #f0bd59 !important;
+  background: #f0bd59 !important;
+  color: #050505 !important;
+  font-size: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 9;
+  box-shadow: 0 12px 30px rgba(240,189,89,0.4);
+  transition: all 0.3s ease;
+}
+
+.viora-hero-{{ section.id }} .viora-plus:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.viora-hero-{{ section.id }} .viora-product-card {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  background: #fff8ec;
+  color: #111;
+  border: 1px solid rgba(240,189,89,0.35);
+  border-radius: 24px;
+  padding: 22px;
+  z-index: 12;
+  box-shadow: 0 25px 60px rgba(53,34,8,0.28);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s ease;
+}
+
+.viora-hero-{{ section.id }} .viora-product-card.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.viora-hero-{{ section.id }} .viora-product-card img {
+  width: 100%;
+  max-height: 170px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.viora-hero-{{ section.id }} .viora-product-card h3 {
+  font-size: 22px;
+  font-weight: 900;
+  margin: 8px 0;
+}
+
+.viora-hero-{{ section.id }} .viora-card-price {
+  font-size: 19px;
+  font-weight: 900;
+  color: #b47a1d;
+  margin: 0 0 8px;
+}
+
+.viora-hero-{{ section.id }} .viora-card-desc {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #444;
+}
+
+.viora-hero-{{ section.id }} .viora-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 14px;
+  background: #f0bd59 !important;
+  color: #050505 !important;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+
+.viora-hero-{{ section.id }} .viora-card-close {
+  position: absolute;
+  right: 14px;
+  top: 8px;
+  border: none;
+  background: transparent;
+  font-size: 30px;
+  cursor: pointer;
+  color: #111;
+}
+
+.viora-hero-{{ section.id }} .viora-fade {
+  opacity: 0;
+}
+
+@keyframes vioraFloat-{{ section.id }} {
+  0%, 100% {
+    transform: translateY(0) rotate(3deg);
+  }
+
+  50% {
+    transform: translateY(-18px) rotate(3deg);
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .viora-hero-{{ section.id }} {
+    padding: 70px 24px;
+    min-height: auto;
+  }
+
+  .viora-hero-{{ section.id }} .viora-container {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-left {
+    text-align: center;
+  }
+
+  .viora-hero-{{ section.id }} .viora-left h1,
+  .viora-hero-{{ section.id }} .viora-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .viora-hero-{{ section.id }} .viora-badges {
+    justify-content: center;
+  }
+
+  .viora-hero-{{ section.id }} .viora-flavors {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .viora-hero-{{ section.id }} .viora-right {
+    min-height: 620px;
+    width: min(620px, 100%);
+    margin: 0 auto;
+  }
+
+  .viora-hero-{{ section.id }} .viora-product {
+    left: 50%;
+    right: auto;
+    top: 0;
+    width: min(430px, 82vw);
+    max-height: 440px;
+    transform: translateX(-50%);
+    animation: none;
+  }
+
+  .viora-hero-{{ section.id }} .viora-circle {
+    right: 28px;
+    top: 26px;
+    width: 108px;
+    height: 108px;
+    font-size: 11px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-plus {
+    left: 50%;
+    top: 245px;
+    transform: translateX(-50%);
+  }
+
+  .viora-hero-{{ section.id }} .viora-plus:hover {
+    transform: translateX(-50%) scale(1.08) rotate(90deg);
+  }
+
+  .viora-hero-{{ section.id }} .viora-product-card {
+    left: 50%;
+    right: auto;
+    bottom: 20px;
+    width: min(360px, 92vw);
+    transform: translateX(-50%) translateY(20px) scale(0.95);
+  }
+
+  .viora-hero-{{ section.id }} .viora-product-card.show {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .viora-hero-{{ section.id }} {
+    padding: 42px 16px 50px;
+    background: linear-gradient(180deg, #fff8ec 0%, #f7ead6 55%, #ead7ba 100%);
+  }
+
+  .viora-hero-{{ section.id }} .viora-bg {
+    opacity: 0.45;
+    background-position: center;
+  }
+
+  .viora-hero-{{ section.id }} .viora-container {
+    gap: 28px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-left {
+    text-align: left;
+  }
+
+  .viora-hero-{{ section.id }} .viora-eyebrow {
+    font-size: 10px;
+    padding: 7px 13px;
+    margin-bottom: 14px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-left h1 {
+    font-size: clamp(39px, 12vw, 54px);
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+    margin-bottom: 18px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-desc {
+    font-size: 15.5px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-badges {
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-badges span {
+    font-size: 11.5px;
+    padding: 8px 11px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-flavors {
+    border-radius: 16px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-flavor {
+    min-height: 54px;
+    padding: 0 16px;
+    font-size: 15.5px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-arrow {
+    font-size: 23px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-right {
+    min-height: 500px;
+    margin-top: 10px;
+    padding: 18px 0 30px;
+    border-radius: 28px;
+    background: rgba(255,255,255,0.32);
+  }
+
+  .viora-hero-{{ section.id }} .viora-product {
+    top: 16px;
+    width: min(330px, 88vw);
+    max-height: 350px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-circle {
+    right: 8px;
+    top: 8px;
+    width: 86px;
+    height: 86px;
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  .viora-hero-{{ section.id }} .viora-plus {
+    width: 50px;
+    height: 50px;
+    top: 230px;
+    font-size: 27px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-product-card {
+    left: 50%;
+    right: auto;
+    bottom: 0;
+    width: min(330px, 94vw);
+    padding: 18px;
+    border-radius: 22px;
+    transform: translateX(-50%) translateY(20px) scale(0.95);
+  }
+
+  .viora-hero-{{ section.id }} .viora-product-card.show {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .viora-hero-{{ section.id }} .viora-product-card img {
+    max-height: 125px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-product-card h3 {
+    font-size: 19px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-card-price {
+    font-size: 17px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-card-desc {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .viora-hero-{{ section.id }} {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-left h1 {
+    font-size: 37px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-desc {
+    font-size: 14.5px;
+  }
+
+  .viora-hero-{{ section.id }} .viora-product {
+    width: min(295px, 88vw);
+  }
+
+  .viora-hero-{{ section.id }} .viora-plus {
+    top: 205px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const section = document.querySelector(".viora-hero-{{ section.id }}");
+  if (!section) return;
+
+  const buttons = section.querySelectorAll(".viora-flavor");
+  const productImg = document.getElementById("VioraProduct-{{ section.id }}");
+
+  const plusBtn = document.getElementById("VioraPlus-{{ section.id }}");
+  const card = document.getElementById("VioraCard-{{ section.id }}");
+  const closeBtn = card ? card.querySelector(".viora-card-close") : null;
+
+  const cardImage = document.getElementById("VioraCardImage-{{ section.id }}");
+  const cardTitle = document.getElementById("VioraCardTitle-{{ section.id }}");
+  const cardPrice = document.getElementById("VioraCardPrice-{{ section.id }}");
+  const cardDesc = document.getElementById("VioraCardDesc-{{ section.id }}");
+  const cardLink = document.getElementById("VioraCardLink-{{ section.id }}");
+
+  buttons.forEach(function (button) {
+    button.addEventListener("mouseenter", function () {
+      changeProduct(button);
+    });
+
+    button.addEventListener("click", function () {
+      changeProduct(button);
+    });
+  });
+
+  if (plusBtn && card) {
+    plusBtn.addEventListener("click", function () {
+      card.classList.toggle("show");
+    });
+  }
+
+  if (closeBtn && card) {
+    closeBtn.addEventListener("click", function () {
+      card.classList.remove("show");
+    });
+  }
+
+  function changeProduct(button) {
+    const image = button.getAttribute("data-product-image");
+    const title = button.getAttribute("data-product-title");
+    const price = button.getAttribute("data-product-price");
+    const url = button.getAttribute("data-product-url");
+    const desc = button.getAttribute("data-product-description");
+
+    buttons.forEach(function (btn) {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    if (productImg && image) {
+      productImg.classList.add("viora-fade");
+
+      setTimeout(function () {
+        productImg.src = image;
+        productImg.alt = title;
+        productImg.classList.remove("viora-fade");
+      }, 180);
+    }
+
+    if (cardImage && image) cardImage.src = image;
+    if (cardTitle) cardTitle.textContent = title;
+    if (cardPrice) cardPrice.textContent = price;
+    if (cardDesc) cardDesc.textContent = desc;
+    if (cardLink && url) cardLink.href = url;
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "VIORA Yogurt Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small top text",
+      "default": "Our Core. Our Promise"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Vietnamese Yogurt, Reimagined."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Smooth, creamy, high-protein Vietnamese-inspired yogurt crafted for everyday wellness, balanced sweetness, and a clean premium taste."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "flavor",
+      "name": "Flavor",
+      "settings": [
+        {
+          "type": "text",
+          "id": "flavor_name",
+          "label": "Flavor name",
+          "default": "Plain Yogurt"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Choose product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "VIORA Yogurt Hero",
+      "blocks": [
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Plain Yogurt"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Vietnamese Coffee"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Lavender Matcha"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Ube"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

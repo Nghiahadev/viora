@@ -1,0 +1,287 @@
+<section class="yb-section">
+  <div class="yb-container">
+
+    <h2 class="yb-title">{{ section.settings.title }}</h2>
+
+    <div class="yb-grid">
+
+      <div class="yb-side yb-left">
+        {% for block in section.blocks limit: 3 %}
+          <div class="yb-item">
+            <div class="yb-content">
+              <h3>{{ block.settings.item_title }}</h3>
+              <p>{{ block.settings.item_text }}</p>
+            </div>
+
+            {% if block.settings.item_icon != blank %}
+              <img class="yb-icon" src="{{ block.settings.item_icon | image_url: width: 90 }}" alt="">
+            {% else %}
+              <div class="yb-icon yb-icon-text">✦</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="yb-center">
+        {% if section.settings.center_image != blank %}
+          <img src="{{ section.settings.center_image | image_url: width: 700 }}" alt="{{ section.settings.title }}">
+        {% endif %}
+      </div>
+
+      <div class="yb-side yb-right">
+        {% for block in section.blocks offset: 3 limit: 3 %}
+          <div class="yb-item">
+            {% if block.settings.item_icon != blank %}
+              <img class="yb-icon" src="{{ block.settings.item_icon | image_url: width: 90 }}" alt="">
+            {% else %}
+              <div class="yb-icon yb-icon-text">✦</div>
+            {% endif %}
+
+            <div class="yb-content">
+              <h3>{{ block.settings.item_title }}</h3>
+              <p>{{ block.settings.item_text }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.yb-section {
+  padding: 80px 20px;
+  background: {{ section.settings.bg_color }};
+  border-top: 4px solid {{ section.settings.accent_color }};
+}
+
+.yb-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.yb-title {
+  text-align: center;
+  margin: 0 0 70px;
+  color: {{ section.settings.title_color }};
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.yb-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px 1fr;
+  align-items: center;
+  gap: 45px;
+}
+
+.yb-side {
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+}
+
+.yb-item {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  align-items: start;
+  gap: 25px;
+}
+
+.yb-right .yb-item {
+  grid-template-columns: 80px 1fr;
+}
+
+.yb-left .yb-content {
+  text-align: right;
+}
+
+.yb-right .yb-content {
+  text-align: left;
+}
+
+.yb-content h3 {
+  margin: 0 0 16px;
+  color: {{ section.settings.accent_color }};
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.yb-content p {
+  margin: 0;
+  color: {{ section.settings.text_color }};
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.yb-icon {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  color: {{ section.settings.accent_color }};
+}
+
+.yb-icon-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+}
+
+.yb-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.yb-center img {
+  max-width: 100%;
+  width: 360px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 25px 35px rgba(0,0,0,0.16));
+}
+
+@media screen and (max-width: 990px) {
+  .yb-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yb-center {
+    order: -1;
+  }
+
+  .yb-left .yb-content,
+  .yb-right .yb-content {
+    text-align: left;
+  }
+
+  .yb-item,
+  .yb-right .yb-item {
+    grid-template-columns: 70px 1fr;
+  }
+
+  .yb-left .yb-item .yb-icon {
+    order: -1;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Yogurt Build Base",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Yogurt Build Your Base"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center product image"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#8B4A2F"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#4A3D4F"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Feature item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "item_title",
+          "label": "Title",
+          "default": "Strawberry Yogurt"
+        },
+        {
+          "type": "textarea",
+          "id": "item_text",
+          "label": "Text",
+          "default": "Fresh and creamy yogurt with a smooth texture and delicious flavor."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_icon",
+          "label": "Icon image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Yogurt Build Base",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "item_title": "Greek Yogurt",
+            "item_text": "Thick, creamy, and packed with rich flavor for a smooth everyday treat."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "item_title": "Strawberry Yogurt",
+            "item_text": "Sweet strawberry flavor blended with creamy yogurt for a fresh taste."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "item_title": "Mango Yogurt",
+            "item_text": "Bright tropical mango flavor with a soft and refreshing yogurt base."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "item_title": "Blueberry Yogurt",
+            "item_text": "A classic fruit flavor with a smooth, creamy, and naturally sweet finish."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "item_title": "Vanilla Yogurt",
+            "item_text": "Simple, smooth, and comforting vanilla flavor made for any time of day."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "item_title": "Honey Yogurt",
+            "item_text": "Creamy yogurt with a touch of honey sweetness for a balanced flavor."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

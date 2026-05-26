@@ -1,0 +1,327 @@
+<section class="custom-contact-section">
+  <div class="page-width">
+
+    <div class="custom-contact-card">
+
+      <!-- LEFT -->
+      <div class="custom-contact-form">
+
+        <h2>Contact Us</h2>
+
+        <p>
+          Feel free to contact us any time. We will get back to you as soon as we can!
+        </p>
+
+        {% form 'contact' %}
+
+          {% if form.posted_successfully? %}
+            <p class="custom-contact-success">
+              Thank you! Your message has been sent successfully.
+            </p>
+          {% endif %}
+
+          {{ form.errors | default_errors }}
+
+          <input
+            type="text"
+            name="contact[name]"
+            placeholder="Your Name"
+            required
+          >
+
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Your Email"
+            required
+          >
+
+          <textarea
+            name="contact[body]"
+            placeholder="Your Message"
+            required
+          ></textarea>
+
+          <button type="submit">
+            Send Message
+          </button>
+
+        {% endform %}
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="custom-contact-info">
+
+        <h3>Contact Info</h3>
+
+        <div class="custom-contact-item">
+          <strong>Phone</strong>
+          <span>111 111 1111</span>
+        </div>
+
+        <div class="custom-contact-item">
+          <strong>Email</strong>
+          <span>yougurt.com</span>
+        </div>
+
+        <div class="custom-contact-item">
+          <strong>Address</strong>
+          <span>Los Angeles, CA</span>
+        </div>
+
+        <div class="custom-contact-socials">
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="custom-map-section">
+
+  <div class="page-width">
+
+    <div class="custom-map-inner">
+
+      <h2>Find Us</h2>
+
+      <div class="custom-map-box">
+
+        <iframe
+          src="https://www.google.com/maps?q=Los+Angeles,+CA&output=embed"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+
+.custom-contact-section {
+  background: #FAF8EE;
+  padding: 60px 0;
+}
+
+.custom-contact-card {
+  background: #ffffff;
+  border-radius: 28px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+}
+
+/* LEFT */
+
+.custom-contact-form {
+  padding: 60px;
+}
+
+.custom-contact-form h2 {
+  margin: 0 0 14px;
+  font-size: 42px;
+  color: #111111;
+  line-height: 1.1;
+  font-weight: 500;
+}
+
+.custom-contact-form p {
+  margin: 0 0 34px;
+  color: #666666;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.custom-contact-form input,
+.custom-contact-form textarea {
+  width: 100%;
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  background: #ffffff;
+  color: #111111;
+  font-size: 15px;
+  font-family: inherit;
+  transition: all .2s ease;
+  box-sizing: border-box;
+}
+
+.custom-contact-form input:focus,
+.custom-contact-form textarea:focus {
+  outline: none;
+  border-color: #111111;
+}
+
+.custom-contact-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* BUTTON */
+
+.custom-contact-form button {
+  width: 100%;
+  border: none;
+  background: #111111;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.custom-contact-form button:hover {
+  background: #333333;
+}
+
+/* RIGHT */
+
+.custom-contact-info {
+  background: #111111;
+  color: #ffffff;
+  padding: 50px 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.custom-contact-info h3 {
+  margin: 0 0 32px;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.custom-contact-item {
+  margin-bottom: 28px;
+}
+
+.custom-contact-item strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.custom-contact-item span {
+  display: block;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.custom-contact-socials {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.custom-contact-socials a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.8;
+  transition: opacity .2s ease;
+}
+
+.custom-contact-socials a:hover {
+  opacity: 1;
+}
+
+.custom-contact-success {
+  color: green;
+  margin-bottom: 20px;
+}
+
+/* MAP */
+
+.custom-map-section {
+  background: #FAF8EE;
+  padding: 0;
+  margin-top: 0;
+}
+
+.custom-map-inner {
+  text-align: center;
+}
+
+.custom-map-inner h2 {
+  font-size: 36px;
+  color: #111111;
+  margin: 0 0 30px;
+  font-weight: 500;
+}
+
+.custom-map-box {
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+}
+
+.custom-map-box iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  display: block;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 900px) {
+
+  .custom-contact-card {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-contact-form {
+    padding: 40px 24px;
+  }
+
+  .custom-contact-info {
+    padding: 40px 24px;
+  }
+
+  .custom-contact-form h2 {
+    font-size: 34px;
+  }
+
+  .custom-map-inner h2 {
+    font-size: 30px;
+  }
+
+  .custom-map-box iframe {
+    height: 350px;
+  }
+
+}
+
+</style>
+
+{% schema %}
+{
+  "name": "Custom Contact Map",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Custom Contact Map"
+    }
+  ]
+}
+{% endschema %}

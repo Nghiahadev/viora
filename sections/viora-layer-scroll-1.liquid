@@ -1,0 +1,451 @@
+<section class="viora1-layer-scroll">
+  <div class="viora1-layer-sticky">
+
+    <div class="viora1-image-wrap">
+      {% if section.settings.image1 != blank %}
+        <img class="viora1-layer viora1-img1" src="{{ section.settings.image1 | image_url: width: 900 }}" alt="">
+      {% endif %}
+
+      {% if section.settings.image2 != blank %}
+        <img class="viora1-layer viora1-img2" src="{{ section.settings.image2 | image_url: width: 900 }}" alt="">
+      {% endif %}
+
+      {% if section.settings.image3 != blank %}
+        <img class="viora1-layer viora1-img3" src="{{ section.settings.image3 | image_url: width: 900 }}" alt="">
+      {% endif %}
+    </div>
+
+    <div class="viora1-nutrition-card">
+      <h2>{{ section.settings.nutrition_title }}</h2>
+
+      <div class="viora1-serving-row">
+        <span>{{ section.settings.serving_label }}</span>
+        <strong>{{ section.settings.serving_text }}</strong>
+      </div>
+
+      <div class="viora1-calories">
+        <span>Calories</span>
+        <strong>{{ section.settings.calories }}</strong>
+      </div>
+
+      {% for block in section.blocks %}
+        <div class="viora1-nutri-row">
+          <span>{{ block.settings.label }}</span>
+          <strong>{{ block.settings.value }}</strong>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+.viora1-layer-scroll {
+  height: 430vh;
+  background: #ffffff;
+  position: relative;
+}
+
+.viora1-layer-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.viora1-image-wrap {
+  position: relative;
+  width: min(540px, 86vw);
+  height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viora1-layer {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: opacity 0.12s linear;
+}
+
+.viora1-img1 {
+  opacity: 1;
+  z-index: 1;
+}
+
+.viora1-img2 {
+  opacity: 0;
+  z-index: 2;
+}
+
+.viora1-img3 {
+  opacity: 0;
+  z-index: 3;
+}
+
+/* NEW NUTRITION STYLE */
+.viora1-nutrition-card {
+  position: absolute;
+  left: 7%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-45px);
+  width: min(560px, 42vw);
+  background: #ffffff;
+  color: #05360b;
+  border: 3px solid #1f4d1f;
+  border-radius: 20px;
+  padding: 24px 22px 20px;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+}
+
+.viora1-nutrition-card h2 {
+  margin: 0 0 22px;
+  color: #020202;
+  font-size: clamp(28px, 3vw, 34px);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+}
+
+.viora1-serving-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 0 14px;
+  border-bottom: 1px solid rgba(31,77,31,0.25);
+  font-size: 14px;
+}
+
+.viora1-serving-row strong {
+  font-weight: 900;
+  color: #05360b;
+}
+
+.viora1-calories {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 0 24px;
+}
+
+.viora1-calories span {
+  color: #041f05;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.viora1-calories strong {
+  color: #05360b;
+  font-size: clamp(42px, 5vw, 52px);
+  line-height: 0.9;
+  font-weight: 900;
+}
+
+.viora1-nutri-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(31,77,31,0.22);
+  color: #174017;
+  font-size: 15px;
+}
+
+.viora1-nutri-row strong {
+  color: #05360b;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.viora1-layer-scroll.show1 .viora1-nutrition-card {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* TABLET */
+@media screen and (max-width: 1050px) {
+  .viora1-nutrition-card {
+    left: 4%;
+    width: min(420px, 42vw);
+  }
+
+  .viora1-image-wrap {
+    width: min(460px, 78vw);
+  }
+}
+
+/* MOBILE */
+@media screen and (max-width: 768px) {
+  .viora1-layer-scroll {
+    height: 460vh;
+  }
+
+  .viora1-layer-sticky {
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 65px 16px 24px;
+    overflow: hidden;
+  }
+
+  .viora1-image-wrap {
+    width: 100%;
+    max-width: 360px;
+    height: 390px;
+    margin: 0 auto;
+    flex-shrink: 0;
+  }
+
+  .viora1-layer {
+    width: 100%;
+  }
+
+  .viora1-nutrition-card {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: min(100%, 360px);
+    margin: 18px auto 0;
+    padding: 18px 18px 16px;
+    border-radius: 18px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .viora1-layer-scroll.show1 .viora1-nutrition-card {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .viora1-nutrition-card h2 {
+    font-size: 28px;
+    margin-bottom: 18px;
+  }
+
+  .viora1-serving-row {
+    font-size: 13px;
+    padding-bottom: 12px;
+  }
+
+  .viora1-calories {
+    padding: 22px 0 18px;
+  }
+
+  .viora1-calories span {
+    font-size: 18px;
+  }
+
+  .viora1-calories strong {
+    font-size: 42px;
+  }
+
+  .viora1-nutri-row {
+    font-size: 13.5px;
+    padding: 10px 0;
+  }
+}
+
+/* SMALL PHONE */
+@media screen and (max-width: 390px) {
+  .viora1-layer-sticky {
+    padding-top: 55px;
+  }
+
+  .viora1-image-wrap {
+    max-width: 320px;
+    height: 350px;
+  }
+
+  .viora1-nutrition-card {
+    width: min(100%, 320px);
+    padding: 16px;
+  }
+
+  .viora1-nutrition-card h2 {
+    font-size: 25px;
+  }
+
+  .viora1-calories strong {
+    font-size: 38px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const section = document.querySelector(".viora1-layer-scroll");
+
+  if (!section) return;
+
+  const img1 = section.querySelector(".viora1-img1");
+  const img2 = section.querySelector(".viora1-img2");
+  const img3 = section.querySelector(".viora1-img3");
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function update() {
+    const rect = section.getBoundingClientRect();
+    const total = section.offsetHeight - window.innerHeight;
+
+    let p = clamp(-rect.top / total, 0, 1);
+
+    let stage1 = clamp(p / 0.3, 0, 1);
+
+    if (img1) img1.style.opacity = 1 - stage1;
+    if (img2) img2.style.opacity = stage1;
+
+    let stage2 = clamp((p - 0.45) / 0.25, 0, 1);
+
+    if (img3) img3.style.opacity = stage2;
+
+    if (p > 0.72) {
+      section.classList.add("show1");
+    } else {
+      section.classList.remove("show1");
+    }
+  }
+
+  window.addEventListener("scroll", update);
+  window.addEventListener("resize", update);
+
+  update();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Viora Layer Scroll 1",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Image 3"
+    },
+    {
+      "type": "text",
+      "id": "nutrition_title",
+      "label": "Nutrition title",
+      "default": "Nutrition Facts"
+    },
+    {
+      "type": "text",
+      "id": "serving_label",
+      "label": "Serving label",
+      "default": "Serving Size"
+    },
+    {
+      "type": "text",
+      "id": "serving_text",
+      "label": "Serving value",
+      "default": "1 Jar"
+    },
+    {
+      "type": "text",
+      "id": "calories",
+      "label": "Calories",
+      "default": "160"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nutrition_row",
+      "name": "Nutrition row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Left text",
+          "default": "Total Fat"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Right value",
+          "default": "6g"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Viora Layer Scroll 1",
+      "blocks": [
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Total Fat",
+            "value": "6g"
+          }
+        },
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Saturated Fat",
+            "value": "3.5g"
+          }
+        },
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Sodium",
+            "value": "55mg"
+          }
+        },
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Carbohydrate",
+            "value": "18g"
+          }
+        },
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Sugar",
+            "value": "15g"
+          }
+        },
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Protein",
+            "value": "9g"
+          }
+        },
+        {
+          "type": "nutrition_row",
+          "settings": {
+            "label": "Calcium",
+            "value": "20%"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

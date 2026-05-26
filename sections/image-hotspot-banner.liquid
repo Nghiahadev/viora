@@ -1,0 +1,499 @@
+<section class="vg-hotspot-section section-{{ section.id }}">
+  <div class="vg-hotspot-wrap">
+    {% if section.settings.main_image != blank %}
+      <img
+        src="{{ section.settings.main_image | image_url: width: 2200 }}"
+        alt="{{ section.settings.image_alt | escape }}"
+        class="vg-hotspot-img"
+        loading="lazy"
+      >
+    {% else %}
+      <div class="vg-hotspot-placeholder">Upload image</div>
+    {% endif %}
+
+    <div class="vg-hotspot-overlay"></div>
+
+    {% for block in section.blocks %}
+      <div
+        class="vg-hotspot-item"
+        style="
+          --dot-x: {{ block.settings.dot_x }}%;
+          --dot-y: {{ block.settings.dot_y }}%;
+          --card-x: {{ block.settings.card_x }}%;
+          --card-y: {{ block.settings.card_y }}%;
+        "
+        {{ block.shopify_attributes }}
+      >
+        <button class="vg-hotspot-dot" type="button" aria-label="Open hotspot">
+          <span class="vg-plus">+</span>
+        </button>
+
+        <div class="vg-hotspot-card">
+          <button class="vg-card-close" type="button" aria-label="Close hotspot">×</button>
+
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .section-{{ section.id }} {
+    padding: {{ section.settings.padding_top }}px 18px {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.bg_color }};
+  }
+
+  .section-{{ section.id }} .vg-hotspot-wrap {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: {{ section.settings.radius }}px;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-img {
+    width: 100%;
+    display: block;
+    border-radius: {{ section.settings.radius }}px;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    pointer-events: none;
+    transition: 0.25s ease;
+    z-index: 2;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-wrap.has-active .vg-hotspot-overlay {
+    background: rgba(0,0,0,0.12);
+  }
+
+  .section-{{ section.id }} .vg-hotspot-placeholder {
+    height: 520px;
+    background: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    border-radius: {{ section.settings.radius }}px;
+    font-size: 18px;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-item {
+    position: absolute;
+    left: var(--dot-x);
+    top: var(--dot-y);
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    line-height: normal;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-dot {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 7px solid rgba(255,255,255,0.78);
+    background: {{ section.settings.dot_bg }};
+    color: {{ section.settings.dot_color }};
+    font-size: 30px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+    transition: 0.25s ease;
+    padding: 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-dot:hover {
+    transform: scale(1.08);
+  }
+
+  .section-{{ section.id }} .vg-hotspot-item.active .vg-hotspot-dot {
+    background: {{ section.settings.active_dot_bg }};
+  }
+
+  .section-{{ section.id }} .vg-hotspot-card {
+    position: absolute;
+    left: calc(var(--card-x) - var(--dot-x));
+    top: calc(var(--card-y) - var(--dot-y));
+    width: 280px;
+    max-width: 280px;
+    background: {{ section.settings.card_bg }};
+    color: {{ section.settings.text_color }};
+    border-radius: 20px;
+    padding: 24px 22px 20px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 99;
+    line-height: normal;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-card h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 800;
+    color: {{ section.settings.heading_color }};
+    padding-right: 42px;
+  }
+
+  .section-{{ section.id }} .vg-hotspot-card p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+  }
+
+  .section-{{ section.id }} .vg-card-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: {{ section.settings.active_dot_bg }};
+    color: {{ section.settings.dot_color }};
+    font-size: 22px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    transition: 0.25s ease;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .section-{{ section.id }} .vg-card-close:hover {
+    transform: rotate(90deg);
+  }
+
+  .section-{{ section.id }} .vg-hotspot-item.active .vg-hotspot-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  @media screen and (max-width: 768px) {
+    .section-{{ section.id }} {
+      padding: 30px 12px;
+    }
+
+    .section-{{ section.id }} .vg-hotspot-wrap {
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .section-{{ section.id }} .vg-hotspot-img {
+      height: 520px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 22px;
+    }
+
+    .section-{{ section.id }} .vg-hotspot-dot {
+      width: 42px;
+      height: 42px;
+      font-size: 24px;
+      border-width: 6px;
+    }
+
+    .section-{{ section.id }} .vg-hotspot-wrap.has-active .vg-hotspot-overlay {
+      background: rgba(0,0,0,0.3);
+      z-index: 20;
+    }
+
+    .section-{{ section.id }} .vg-hotspot-card {
+      position: fixed;
+      left: 50%;
+      right: auto;
+      top: auto;
+      bottom: 22px;
+      width: calc(100vw - 32px);
+      max-width: 380px;
+      border-radius: 22px;
+      padding: 26px 22px 22px;
+      z-index: 99999;
+      transform: translateX(-50%) translateY(35px);
+    }
+
+    .section-{{ section.id }} .vg-hotspot-item.active .vg-hotspot-card {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .section-{{ section.id }} .vg-hotspot-card h3 {
+      font-size: 22px;
+      padding-right: 42px;
+    }
+
+    .section-{{ section.id }} .vg-hotspot-card p {
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+
+    .section-{{ section.id }} .vg-card-close {
+      width: 34px;
+      height: 34px;
+      top: 12px;
+      right: 12px;
+      font-size: 21px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const section = document.querySelector(".section-{{ section.id }}");
+    if (!section) return;
+
+    const wrap = section.querySelector(".vg-hotspot-wrap");
+    const items = section.querySelectorAll(".vg-hotspot-item");
+
+    items.forEach((item) => {
+      const dot = item.querySelector(".vg-hotspot-dot");
+      const closeBtn = item.querySelector(".vg-card-close");
+
+      dot.addEventListener("click", function (e) {
+        e.stopPropagation();
+
+        const isActive = item.classList.contains("active");
+
+        items.forEach((hotspot) => {
+          hotspot.classList.remove("active");
+        });
+
+        wrap.classList.remove("has-active");
+
+        if (!isActive) {
+          item.classList.add("active");
+          wrap.classList.add("has-active");
+        }
+      });
+
+      closeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+
+        item.classList.remove("active");
+
+        if (!section.querySelector(".vg-hotspot-item.active")) {
+          wrap.classList.remove("has-active");
+        }
+      });
+    });
+
+    document.addEventListener("click", function () {
+      items.forEach((hotspot) => {
+        hotspot.classList.remove("active");
+      });
+
+      wrap.classList.remove("has-active");
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Vigora Image Hotspots",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Vigora yogurt banner"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 900,
+      "max": 1600,
+      "step": 50,
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_bg",
+      "label": "Dot background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "active_dot_bg",
+      "label": "Active dot background",
+      "default": "#ffd166"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot icon color",
+      "default": "#14113f"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#050222"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#25223f"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Hotspot",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Naturally Flavorful"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Made with real coffee flavor and creamy yogurt for a smooth, delicious taste."
+        },
+        {
+          "type": "range",
+          "id": "dot_x",
+          "label": "Dot horizontal position",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 48
+        },
+        {
+          "type": "range",
+          "id": "dot_y",
+          "label": "Dot vertical position",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 54
+        },
+        {
+          "type": "range",
+          "id": "card_x",
+          "label": "Card horizontal position",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 36
+        },
+        {
+          "type": "range",
+          "id": "card_y",
+          "label": "Card vertical position",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 36
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vigora Image Hotspots",
+      "blocks": [
+        {
+          "type": "hotspot",
+          "settings": {
+            "title": "Naturally Flavorful",
+            "text": "Made with real coffee flavor and creamy yogurt for a smooth, delicious taste.",
+            "dot_x": 61,
+            "dot_y": 53,
+            "card_x": 45,
+            "card_y": 47
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "title": "Creamy & Smooth",
+            "text": "A rich yogurt drink base crafted for a refreshing and satisfying experience.",
+            "dot_x": 69,
+            "dot_y": 44,
+            "card_x": 73,
+            "card_y": 28
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "title": "Freshness Guaranteed",
+            "text": "Packed with quality ingredients and made to taste fresh from the first sip.",
+            "dot_x": 76,
+            "dot_y": 54,
+            "card_x": 64,
+            "card_y": 65
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

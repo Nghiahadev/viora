@@ -1,0 +1,235 @@
+<section class="viora-hover-flavors">
+  <div class="viora-flavor-header">
+    <span>MORE TO LOVE</span>
+    <h2>Explore Our Signature Flavors</h2>
+  </div>
+
+  <div class="viora-flavor-grid">
+    {% for block in section.blocks %}
+      <a href="{{ block.settings.link }}" class="viora-flavor-card" {{ block.shopify_attributes }}>
+        
+        <div class="viora-flavor-image">
+          {% if block.settings.image_1 != blank %}
+            <img
+              class="viora-img-main"
+              src="{{ block.settings.image_1 | image_url: width: 1200 }}"
+              alt="{{ block.settings.title | escape }}"
+              loading="lazy"
+            >
+          {% endif %}
+
+          {% if block.settings.image_2 != blank %}
+            <img
+              class="viora-img-hover"
+              src="{{ block.settings.image_2 | image_url: width: 1200 }}"
+              alt="{{ block.settings.title | escape }}"
+              loading="lazy"
+            >
+          {% endif %}
+        </div>
+
+        <div class="viora-flavor-content">
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.description }}</p>
+        </div>
+
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.viora-hover-flavors {
+  width: 100%;
+  background: #f7f1e8;
+  padding: 38px 4%;
+}
+
+.viora-flavor-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.viora-flavor-header span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: 700;
+  color: #9a7a5c;
+  margin-bottom: 4px;
+}
+
+.viora-flavor-header h2 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #2d2118;
+}
+
+.viora-flavor-grid {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.viora-flavor-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: #fffaf4;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(70, 42, 20, 0.14);
+  box-shadow: 0 6px 18px rgba(44, 30, 20, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.viora-flavor-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 34px rgba(44, 30, 20, 0.18);
+}
+
+.viora-flavor-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  overflow: hidden;
+  background: #fff;
+}
+
+.viora-flavor-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition:
+    opacity 1.4s ease,
+    transform 1.8s ease;
+}
+
+/* Image 2 stays behind */
+.viora-img-hover {
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+/* Image 1 always stays visible */
+.viora-img-main {
+  z-index: 2;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hover: second image slowly appears */
+.viora-flavor-card:hover .viora-img-hover {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hover: first image still keeps */
+.viora-flavor-card:hover .viora-img-main {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.viora-flavor-content {
+  text-align: center;
+  padding: 10px 8px 14px;
+}
+
+.viora-flavor-content h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: #3a2418;
+}
+
+.viora-flavor-content p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #59483c;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 1100px) {
+  .viora-flavor-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .viora-hover-flavors {
+    padding: 30px 14px;
+  }
+
+  .viora-flavor-header h2 {
+    font-size: 24px;
+  }
+
+  .viora-flavor-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .viora-flavor-content h3 {
+    font-size: 14px;
+  }
+
+  .viora-flavor-content p {
+    font-size: 11px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "VIORA Hover Flavors",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "flavor",
+      "name": "Flavor Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image 1 - Product jar"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image 2 - Hover background/splash"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Flavor name",
+          "default": "Vietnamese Coffee"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Bold Coffee Smooth & Creamy"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "VIORA Hover Flavors"
+    }
+  ]
+}
+{% endschema %}

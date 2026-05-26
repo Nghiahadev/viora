@@ -1,0 +1,616 @@
+<section id="YogurtAccordion-{{ section.id }}" class="yogurt-accordion-section">
+  <div class="yogurt-slider-container">
+    <div class="now-showing">
+      {{ section.settings.top_label }}
+    </div>
+
+    <div class="accordion-slider">
+      {% for block in section.blocks %}
+        <div
+          class="slide {% if forloop.first %}active{% endif %}"
+          {% if block.settings.image != blank %}
+            style="background-image: url('{{ block.settings.image | image_url: width: 2200 }}');"
+          {% endif %}
+          {{ block.shopify_attributes }}
+        >
+          <div class="slide-overlay"></div>
+
+          <div class="slide-content">
+            <div class="slide-number">{{ forloop.index | prepend: '0' }}</div>
+
+            <div class="yogurt-brand">
+              {{ block.settings.small_title }}
+            </div>
+
+            <h2 class="yogurt-name">
+              {{ block.settings.title }}
+            </h2>
+
+            <p class="yogurt-subtitle">
+              {{ block.settings.subtitle }}
+            </p>
+
+            <div class="yogurt-specs">
+              <div class="spec-row">
+                <span>Flavor</span>
+                <strong>{{ block.settings.flavor }}</strong>
+              </div>
+
+              <div class="spec-row">
+                <span>Texture</span>
+                <strong>{{ block.settings.texture }}</strong>
+              </div>
+
+              <div class="spec-row">
+                <span>Benefit</span>
+                <strong>{{ block.settings.benefit }}</strong>
+              </div>
+
+              <div class="spec-row">
+                <span>Made With</span>
+                <strong>{{ block.settings.made_with }}</strong>
+              </div>
+            </div>
+
+            <div class="yogurt-badges">
+              <span>{{ block.settings.badge_1 }}</span>
+              <span>{{ block.settings.badge_2 }}</span>
+              <span>{{ block.settings.badge_3 }}</span>
+            </div>
+          </div>
+
+          <div class="plus-button"></div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button class="nav-arrow nav-prev" aria-label="Previous slide">‹</button>
+    <button class="nav-arrow nav-next" aria-label="Next slide">›</button>
+  </div>
+
+  <style>
+    #YogurtAccordion-{{ section.id }} {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      background: #f8fbf4;
+      overflow: hidden;
+
+      --accent: {{ section.settings.accent_color }};
+      --desktop-height: {{ section.settings.desktop_height }}px;
+      --mobile-height: {{ section.settings.mobile_height }}px;
+    }
+
+    #YogurtAccordion-{{ section.id }} * {
+      box-sizing: border-box;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-slider-container {
+      width: 100%;
+      height: var(--desktop-height);
+      position: relative;
+      overflow: hidden;
+      background: #111;
+    }
+
+    #YogurtAccordion-{{ section.id }} .now-showing {
+      position: absolute;
+      top: 24px;
+      left: clamp(18px, 4vw, 56px);
+      z-index: 10;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .now-showing::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    #YogurtAccordion-{{ section.id }} .accordion-slider {
+      width: 100%;
+      height: 100%;
+      display: flex;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      filter: grayscale(0.45);
+      transition: flex 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s ease;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide.active,
+    #YogurtAccordion-{{ section.id }} .slide:hover {
+      filter: grayscale(0);
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide.active {
+      flex: 2.8;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.78) 85%),
+        linear-gradient(90deg, rgba(0,0,0,0.35), transparent);
+      z-index: 1;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide-content {
+      position: absolute;
+      left: clamp(22px, 4vw, 70px);
+      right: clamp(22px, 4vw, 70px);
+      bottom: 42px;
+      z-index: 2;
+      color: #fff;
+      max-width: 560px;
+      transition: bottom 0.6s ease;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide.active .slide-content {
+      bottom: clamp(55px, 9vh, 105px);
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide-number {
+      font-size: clamp(36px, 5vw, 76px);
+      font-weight: 300;
+      line-height: 1;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 10px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-brand {
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-name {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 54px);
+      line-height: 1.05;
+      font-weight: 900;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.5s ease;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-subtitle {
+      margin: 0 0 22px;
+      font-size: clamp(15px, 1.4vw, 18px);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.88);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.5s ease 0.08s;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-specs,
+    #YogurtAccordion-{{ section.id }} .yogurt-badges {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.5s ease 0.15s;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide.active .yogurt-name,
+    #YogurtAccordion-{{ section.id }} .slide.active .yogurt-subtitle,
+    #YogurtAccordion-{{ section.id }} .slide.active .yogurt-specs,
+    #YogurtAccordion-{{ section.id }} .slide.active .yogurt-badges {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #YogurtAccordion-{{ section.id }} .spec-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.16);
+      font-size: 14px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .spec-row span {
+      color: rgba(255,255,255,0.7);
+    }
+
+    #YogurtAccordion-{{ section.id }} .spec-row strong {
+      color: #fff;
+      text-align: right;
+      font-weight: 800;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .yogurt-badges span {
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+
+    #YogurtAccordion-{{ section.id }} .plus-button {
+      position: absolute;
+      right: clamp(22px, 3vw, 48px);
+      bottom: 34px;
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      z-index: 3;
+      transition: all 0.3s ease;
+    }
+
+    #YogurtAccordion-{{ section.id }} .plus-button::before,
+    #YogurtAccordion-{{ section.id }} .plus-button::after {
+      content: "";
+      position: absolute;
+      background: var(--accent);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #YogurtAccordion-{{ section.id }} .plus-button::before {
+      width: 14px;
+      height: 2px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .plus-button::after {
+      width: 2px;
+      height: 14px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .slide.active .plus-button::after {
+      opacity: 0;
+    }
+
+    #YogurtAccordion-{{ section.id }} .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      font-size: 32px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 8;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    #YogurtAccordion-{{ section.id }} .nav-arrow:hover {
+      background: rgba(255,255,255,0.26);
+    }
+
+    #YogurtAccordion-{{ section.id }} .nav-prev {
+      left: 24px;
+    }
+
+    #YogurtAccordion-{{ section.id }} .nav-next {
+      right: 24px;
+    }
+
+    @media screen and (max-width: 989px) {
+      #YogurtAccordion-{{ section.id }} .slide.active {
+        flex: 2.2;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide-content {
+        max-width: 460px;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #YogurtAccordion-{{ section.id }} .yogurt-slider-container {
+        height: var(--mobile-height);
+      }
+
+      #YogurtAccordion-{{ section.id }} .accordion-slider {
+        flex-direction: column;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide {
+        flex: 1;
+        min-height: 92px;
+        filter: grayscale(0);
+        background-position: center;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide.active {
+        flex: 4.2;
+      }
+
+      #YogurtAccordion-{{ section.id }} .now-showing {
+        top: 16px;
+        left: 18px;
+        font-size: 12px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide-content {
+        left: 20px;
+        right: 20px;
+        bottom: 18px;
+        max-width: none;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide.active .slide-content {
+        bottom: 30px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide-number {
+        font-size: 32px;
+        margin-bottom: 5px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .yogurt-brand {
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .yogurt-name {
+        font-size: 26px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .yogurt-subtitle {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 14px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .spec-row {
+        font-size: 12px;
+        gap: 12px;
+        padding: 5px 0;
+      }
+
+      #YogurtAccordion-{{ section.id }} .yogurt-badges {
+        gap: 7px;
+        margin-top: 12px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .yogurt-badges span {
+        font-size: 11px;
+        padding: 6px 10px;
+      }
+
+      #YogurtAccordion-{{ section.id }} .plus-button,
+      #YogurtAccordion-{{ section.id }} .nav-arrow {
+        display: none;
+      }
+
+      #YogurtAccordion-{{ section.id }} .slide:not(.active) .yogurt-name,
+      #YogurtAccordion-{{ section.id }} .slide:not(.active) .yogurt-subtitle,
+      #YogurtAccordion-{{ section.id }} .slide:not(.active) .yogurt-specs,
+      #YogurtAccordion-{{ section.id }} .slide:not(.active) .yogurt-badges {
+        display: none;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const section = document.querySelector("#YogurtAccordion-{{ section.id }}");
+      if (!section) return;
+
+      const slides = section.querySelectorAll(".slide");
+      const prevBtn = section.querySelector(".nav-prev");
+      const nextBtn = section.querySelector(".nav-next");
+
+      if (!slides.length) return;
+
+      let currentIndex = 0;
+
+      function setActiveSlide(index) {
+        slides.forEach(slide => slide.classList.remove("active"));
+        slides[index].classList.add("active");
+        currentIndex = index;
+      }
+
+      slides.forEach((slide, index) => {
+        slide.addEventListener("click", function () {
+          setActiveSlide(index);
+        });
+      });
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          setActiveSlide((currentIndex + 1) % slides.length);
+        });
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          setActiveSlide((currentIndex - 1 + slides.length) % slides.length);
+        });
+      }
+    });
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Yogurt Accordion Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "top_label",
+      "label": "Top Label",
+      "default": "Fresh Yogurt Picks"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#b7e85f"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop Height",
+      "min": 420,
+      "max": 900,
+      "step": 20,
+      "default": 720
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile Height",
+      "min": 520,
+      "max": 1000,
+      "step": 20,
+      "default": 760
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Yogurt Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Slide Image"
+        },
+        {
+          "type": "text",
+          "id": "small_title",
+          "label": "Small Title",
+          "default": "VIORA Creamery"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Main Title",
+          "default": "Vietnamese Coffee Yogurt"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Bold Vietnamese coffee blended with smooth probiotic yogurt for a creamy café-inspired taste."
+        },
+        {
+          "type": "text",
+          "id": "flavor",
+          "label": "Flavor",
+          "default": "Vietnamese Coffee"
+        },
+        {
+          "type": "text",
+          "id": "texture",
+          "label": "Texture",
+          "default": "Silky & Creamy"
+        },
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "Benefit",
+          "default": "Live Active Cultures"
+        },
+        {
+          "type": "text",
+          "id": "made_with",
+          "label": "Made With",
+          "default": "Arabica Coffee Extract"
+        },
+        {
+          "type": "text",
+          "id": "badge_1",
+          "label": "Badge 1",
+          "default": "Probiotic"
+        },
+        {
+          "type": "text",
+          "id": "badge_2",
+          "label": "Badge 2",
+          "default": "Non-GMO"
+        },
+        {
+          "type": "text",
+          "id": "badge_3",
+          "label": "Badge 3",
+          "default": "Gluten Free"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Yogurt Accordion Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Vietnamese Coffee Yogurt",
+            "flavor": "Vietnamese Coffee",
+            "made_with": "Arabica Coffee Extract"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Strawberry Yogurt",
+            "flavor": "Fresh Strawberry",
+            "made_with": "Real Fruit Purée"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Mango Yogurt",
+            "flavor": "Golden Mango",
+            "made_with": "Mango Purée"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "title": "Original Yogurt",
+            "flavor": "Classic Original",
+            "made_with": "Fresh Milk"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

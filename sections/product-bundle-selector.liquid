@@ -1,0 +1,684 @@
+<style>
+  .vc-bundle-section {
+    width: 100%;
+    padding: 36px 20px;
+    background: #070707;
+  }
+
+  .vc-bundle-card {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: #fffaf2;
+    border-radius: 22px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.05fr 1.65fr;
+    border: 1px solid #eadfce;
+  }
+
+  .vc-bundle-image {
+    padding: 28px 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #dfd1bd;
+  }
+
+  .vc-bundle-image img {
+    width: 100%;
+    max-width: 430px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .vc-bundle-content {
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  .vc-bundle-main {
+    padding: 28px 34px 18px;
+    display: grid;
+    grid-template-columns: 0.9fr 1.35fr;
+    gap: 34px;
+    align-items: start;
+  }
+
+  .vc-bundle-title {
+    margin: 0 0 12px;
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 900;
+    color: #202020;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+  }
+
+  .vc-bundle-desc {
+    margin: 0 0 16px;
+    color: #5d5650;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .vc-bundle-stars {
+    color: #d59a35;
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  .vc-bundle-stars span {
+    color: #222;
+    font-size: 13px;
+    font-weight: 800;
+    margin-left: 8px;
+  }
+
+  .vc-bundle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .vc-bundle-tag {
+    background: #eee8df;
+    color: #34302b;
+    padding: 9px 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .vc-product-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .vc-product-option {
+    position: relative;
+    min-height: 155px;
+    padding: 16px 12px 14px;
+    border: 2px solid #eadfce;
+    border-radius: 15px;
+    background: #fffaf5;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .vc-product-option.active {
+    border-color: #b8752d;
+    box-shadow: 0 8px 20px rgba(184, 117, 45, 0.18);
+  }
+
+  .vc-best-badge {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #b8752d;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+  }
+
+  .vc-option-title {
+    font-size: 14px;
+    font-weight: 900;
+    color: #24201c;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .vc-option-subtitle {
+    font-size: 12px;
+    color: #756c64;
+    margin-bottom: 10px;
+  }
+
+  .vc-option-img {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .vc-option-img img {
+    max-height: 48px;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .vc-option-price {
+    font-size: 18px;
+    font-weight: 900;
+    color: #24201c;
+    line-height: 1.1;
+  }
+
+  .vc-option-compare {
+    font-size: 12px;
+    color: #8c8279;
+    text-decoration: line-through;
+    margin-left: 4px;
+  }
+
+  .vc-form-row {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 14px;
+  }
+
+  .vc-qty {
+    height: 54px;
+    background: #eee8df;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .vc-qty button {
+    width: 46px;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    font-size: 24px;
+    cursor: pointer;
+    color: #1e1e1e;
+  }
+
+  .vc-qty input {
+    width: 44px;
+    border: 0;
+    background: transparent;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 800;
+    outline: none;
+  }
+
+  .vc-add-btn {
+    height: 54px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #c88b3e, #efbd64);
+    color: white;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+  }
+
+  .vc-info-row {
+    border-top: 1px solid #dfd1bd;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .vc-info-item {
+    padding: 16px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    color: #3d3833;
+    font-size: 13px;
+    font-weight: 800;
+    border-right: 1px solid #dfd1bd;
+  }
+
+  .vc-info-item:last-child {
+    border-right: 0;
+  }
+
+  .vc-info-item svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: #4d4741;
+    stroke-width: 2;
+  }
+
+  @media (max-width: 1000px) {
+    .vc-bundle-card,
+    .vc-bundle-main {
+      grid-template-columns: 1fr;
+    }
+
+    .vc-bundle-image {
+      border-right: 0;
+      border-bottom: 1px solid #dfd1bd;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .vc-bundle-section {
+      padding: 22px 12px;
+    }
+
+    .vc-bundle-main {
+      padding: 24px 18px 16px;
+    }
+
+    .vc-product-options,
+    .vc-form-row,
+    .vc-info-row {
+      grid-template-columns: 1fr;
+    }
+
+    .vc-bundle-title {
+      font-size: 32px;
+    }
+
+    .vc-product-option {
+      min-height: 145px;
+    }
+
+    .vc-info-item {
+      border-right: 0;
+      border-bottom: 1px solid #dfd1bd;
+    }
+
+    .vc-info-item:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>
+
+<section class="vc-bundle-section">
+  <div class="vc-bundle-card">
+
+    <div class="vc-bundle-image">
+      {% if section.settings.main_image != blank %}
+        <img src="{{ section.settings.main_image | image_url: width: 900 }}" alt="{{ section.settings.title }}">
+      {% endif %}
+    </div>
+
+    <div class="vc-bundle-content">
+
+      <div class="vc-bundle-main">
+
+        <div class="vc-bundle-text">
+          <h2 class="vc-bundle-title">{{ section.settings.title }}</h2>
+
+          <p class="vc-bundle-desc">
+            {{ section.settings.description }}
+          </p>
+
+          <div class="vc-bundle-stars">
+            ★★★★★ <span>{{ section.settings.review_text }}</span>
+          </div>
+
+          <div class="vc-bundle-tags">
+            {% if section.settings.tag_1 != blank %}
+              <span class="vc-bundle-tag">{{ section.settings.tag_1 }}</span>
+            {% endif %}
+
+            {% if section.settings.tag_2 != blank %}
+              <span class="vc-bundle-tag">{{ section.settings.tag_2 }}</span>
+            {% endif %}
+
+            {% if section.settings.tag_3 != blank %}
+              <span class="vc-bundle-tag">{{ section.settings.tag_3 }}</span>
+            {% endif %}
+
+            {% if section.settings.tag_4 != blank %}
+              <span class="vc-bundle-tag">{{ section.settings.tag_4 }}</span>
+            {% endif %}
+
+            {% if section.settings.tag_5 != blank %}
+              <span class="vc-bundle-tag">{{ section.settings.tag_5 }}</span>
+            {% endif %}
+
+            {% if section.settings.tag_6 != blank %}
+              <span class="vc-bundle-tag">{{ section.settings.tag_6 }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <form method="post" action="/cart/add" class="vc-cart-form">
+
+          {% assign p1 = section.settings.product_1 %}
+          {% assign p3 = section.settings.product_3 %}
+          {% assign p5 = section.settings.product_5 %}
+
+          {% if p1 != blank %}
+            <input
+              type="hidden"
+              name="id"
+              class="vc-selected-variant"
+              value="{{ p1.selected_or_first_available_variant.id }}"
+            >
+          {% endif %}
+
+          <div class="vc-product-options">
+
+            {% if p1 != blank %}
+              {% assign v1 = p1.selected_or_first_available_variant %}
+              <div
+                class="vc-product-option active"
+                data-variant="{{ v1.id }}"
+              >
+                <div class="vc-option-title">{{ section.settings.card_1_title }}</div>
+                <div class="vc-option-subtitle">{{ section.settings.card_1_subtitle }}</div>
+
+                <div class="vc-option-img">
+                  {% if p1.featured_image %}
+                    <img src="{{ p1.featured_image | image_url: width: 180 }}" alt="{{ p1.title }}">
+                  {% endif %}
+                </div>
+
+                <div class="vc-option-price">
+                  {{ v1.price | money }}
+                  {% if v1.compare_at_price > v1.price %}
+                    <span class="vc-option-compare">{{ v1.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if p3 != blank %}
+              {% assign v3 = p3.selected_or_first_available_variant %}
+              <div
+                class="vc-product-option"
+                data-variant="{{ v3.id }}"
+              >
+                {% if section.settings.show_best_value %}
+                  <div class="vc-best-badge">{{ section.settings.best_value_text }}</div>
+                {% endif %}
+
+                <div class="vc-option-title">{{ section.settings.card_3_title }}</div>
+                <div class="vc-option-subtitle">{{ section.settings.card_3_subtitle }}</div>
+
+                <div class="vc-option-img">
+                  {% if p3.featured_image %}
+                    <img src="{{ p3.featured_image | image_url: width: 180 }}" alt="{{ p3.title }}">
+                  {% endif %}
+                </div>
+
+                <div class="vc-option-price">
+                  {{ v3.price | money }}
+                  {% if v3.compare_at_price > v3.price %}
+                    <span class="vc-option-compare">{{ v3.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+            {% if p5 != blank %}
+              {% assign v5 = p5.selected_or_first_available_variant %}
+              <div
+                class="vc-product-option"
+                data-variant="{{ v5.id }}"
+              >
+                <div class="vc-option-title">{{ section.settings.card_5_title }}</div>
+                <div class="vc-option-subtitle">{{ section.settings.card_5_subtitle }}</div>
+
+                <div class="vc-option-img">
+                  {% if p5.featured_image %}
+                    <img src="{{ p5.featured_image | image_url: width: 180 }}" alt="{{ p5.title }}">
+                  {% endif %}
+                </div>
+
+                <div class="vc-option-price">
+                  {{ v5.price | money }}
+                  {% if v5.compare_at_price > v5.price %}
+                    <span class="vc-option-compare">{{ v5.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+          </div>
+
+          <div class="vc-form-row">
+            <div class="vc-qty">
+              <button type="button" class="vc-minus">−</button>
+              <input type="number" name="quantity" value="1" min="1" class="vc-qty-input">
+              <button type="button" class="vc-plus">+</button>
+            </div>
+
+            <button type="submit" class="vc-add-btn">
+              {{ section.settings.button_text }}
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+      <div class="vc-info-row">
+        <div class="vc-info-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 21s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z"></path>
+            <circle cx="12" cy="9" r="2.5"></circle>
+          </svg>
+          {{ section.settings.info_1 }}
+        </div>
+
+        <div class="vc-info-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2v20"></path>
+            <path d="M4.9 4.9l14.2 14.2"></path>
+            <path d="M2 12h20"></path>
+            <path d="M4.9 19.1L19.1 4.9"></path>
+          </svg>
+          {{ section.settings.info_2 }}
+        </div>
+
+        <div class="vc-info-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M8 2h8"></path>
+            <path d="M10 2v5l-3 4v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-9l-3-4V2"></path>
+            <path d="M8 13h8"></path>
+          </svg>
+          {{ section.settings.info_3 }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".vc-bundle-section").forEach(function(section) {
+      const options = section.querySelectorAll(".vc-product-option");
+      const variantInput = section.querySelector(".vc-selected-variant");
+      const minus = section.querySelector(".vc-minus");
+      const plus = section.querySelector(".vc-plus");
+      const qty = section.querySelector(".vc-qty-input");
+
+      options.forEach(function(option) {
+        option.addEventListener("click", function() {
+          options.forEach(function(item) {
+            item.classList.remove("active");
+          });
+
+          option.classList.add("active");
+
+          if (variantInput) {
+            variantInput.value = option.dataset.variant;
+          }
+        });
+      });
+
+      if (minus && plus && qty) {
+        minus.addEventListener("click", function() {
+          let value = parseInt(qty.value) || 1;
+          if (value > 1) qty.value = value - 1;
+        });
+
+        plus.addEventListener("click", function() {
+          let value = parseInt(qty.value) || 1;
+          qty.value = value + 1;
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "VC Yogurt Bundle",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Left large image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "PLAIN YOGURT"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Our signature. Smooth, creamy, lightly sweet and satisfying."
+    },
+    {
+      "type": "text",
+      "id": "review_text",
+      "label": "Review text",
+      "default": "5.0 (128 reviews)"
+    },
+    {
+      "type": "text",
+      "id": "tag_1",
+      "label": "Tag 1",
+      "default": "20g Protein"
+    },
+    {
+      "type": "text",
+      "id": "tag_2",
+      "label": "Tag 2",
+      "default": "Low Sugar"
+    },
+    {
+      "type": "text",
+      "id": "tag_3",
+      "label": "Tag 3",
+      "default": "Live Cultures"
+    },
+    {
+      "type": "text",
+      "id": "tag_4",
+      "label": "Tag 4"
+    },
+    {
+      "type": "text",
+      "id": "tag_5",
+      "label": "Tag 5"
+    },
+    {
+      "type": "text",
+      "id": "tag_6",
+      "label": "Tag 6"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Choose 1 Jar product"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Choose 3 Jar product"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Choose 5 Jar product"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "1 Jar card title",
+      "default": "Single Jar"
+    },
+    {
+      "type": "text",
+      "id": "card_1_subtitle",
+      "label": "1 Jar card subtitle",
+      "default": "1 Jar"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "3 Jar card title",
+      "default": "3-Pack"
+    },
+    {
+      "type": "text",
+      "id": "card_3_subtitle",
+      "label": "3 Jar card subtitle",
+      "default": "Best Value"
+    },
+    {
+      "type": "text",
+      "id": "card_5_title",
+      "label": "5 Jar card title",
+      "default": "5-Pack"
+    },
+    {
+      "type": "text",
+      "id": "card_5_subtitle",
+      "label": "5 Jar card subtitle",
+      "default": "Family Pack"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_best_value",
+      "label": "Show Best Value badge on 3-Pack",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "best_value_text",
+      "label": "Best value badge text",
+      "default": "BEST VALUE"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "PRE-ORDER NOW"
+    },
+    {
+      "type": "text",
+      "id": "info_1",
+      "label": "Bottom info 1",
+      "default": "Local Pickup Available"
+    },
+    {
+      "type": "text",
+      "id": "info_2",
+      "label": "Bottom info 2",
+      "default": "Refrigerated Product"
+    },
+    {
+      "type": "text",
+      "id": "info_3",
+      "label": "Bottom info 3",
+      "default": "Contains Milk"
+    }
+  ],
+  "presets": [
+    {
+      "name": "VC Yogurt Bundle"
+    }
+  ]
+}
+{% endschema %}

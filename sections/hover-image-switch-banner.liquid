@@ -1,0 +1,208 @@
+<section class="hover-switch-banner section-{{ section.id }}">
+  <div class="hover-switch-banner__media">
+    {% for block in section.blocks %}
+      {% if block.settings.image != blank %}
+        <img
+          src="{{ block.settings.image | image_url: width: 2400 }}"
+          alt="{{ block.settings.title | escape }}"
+          class="hover-switch-banner__image {% if forloop.first %}active{% endif %}"
+          data-hover-image="{{ forloop.index }}"
+        >
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="hover-switch-banner__overlay">
+    {% for block in section.blocks %}
+      <span
+        class="hover-switch-banner__text {% if forloop.first %}active{% endif %}"
+        data-hover-text="{{ forloop.index }}"
+        {{ block.shopify_attributes }}
+      >
+        {{ block.settings.title }}
+      </span>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.section-{{ section.id }} {
+  position: relative;
+  width: 100%;
+  height: {{ section.settings.height }}px;
+  overflow: hidden;
+  background: {{ section.settings.border_color }};
+  padding-top: {{ section.settings.border_size }}px;
+  padding-bottom: {{ section.settings.border_size }}px;
+}
+
+.section-{{ section.id }} .hover-switch-banner__media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.section-{{ section.id }} .hover-switch-banner__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.45s ease, transform 0.6s ease;
+}
+
+.section-{{ section.id }} .hover-switch-banner__image.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.section-{{ section.id }} .hover-switch-banner__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 60px);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.section-{{ section.id }} .hover-switch-banner__text {
+  pointer-events: auto;
+  cursor: pointer;
+  color: rgba(255,255,255,0.45);
+  font-size: clamp(34px, 5vw, 76px);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.section-{{ section.id }} .hover-switch-banner__text:hover,
+.section-{{ section.id }} .hover-switch-banner__text.active {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .section-{{ section.id }} {
+    height: {{ section.settings.mobile_height }}px;
+  }
+
+  .section-{{ section.id }} .hover-switch-banner__overlay {
+    gap: 18px;
+  }
+
+  .section-{{ section.id }} .hover-switch-banner__text {
+    font-size: clamp(26px, 10vw, 42px);
+    letter-spacing: -1px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const section = document.querySelector(".section-{{ section.id }}");
+  if (!section) return;
+
+  const texts = section.querySelectorAll("[data-hover-text]");
+  const images = section.querySelectorAll("[data-hover-image]");
+
+  texts.forEach((text) => {
+    text.addEventListener("mouseenter", function () {
+      const index = this.dataset.hoverText;
+
+      texts.forEach((item) => item.classList.remove("active"));
+      images.forEach((img) => img.classList.remove("active"));
+
+      this.classList.add("active");
+
+      const targetImage = section.querySelector(`[data-hover-image="${index}"]`);
+      if (targetImage) targetImage.classList.add("active");
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Hover Image Switch Banner",
+  "settings": [
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Desktop height",
+      "min": 250,
+      "max": 800,
+      "step": 10,
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 180,
+      "max": 600,
+      "step": 10,
+      "default": 320
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Top and bottom border color",
+      "default": "#ed1c24"
+    },
+    {
+      "type": "range",
+      "id": "border_size",
+      "label": "Top and bottom border size",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hover_item",
+      "name": "Hover item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text",
+          "default": "THE CORE"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hover Image Switch Banner",
+      "blocks": [
+        {
+          "type": "hover_item",
+          "settings": {
+            "title": "THE CORE"
+          }
+        },
+        {
+          "type": "hover_item",
+          "settings": {
+            "title": "THE CARRY"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

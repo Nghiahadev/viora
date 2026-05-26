@@ -1,0 +1,235 @@
+<section class="viora-benefits-section">
+  <div class="viora-benefits-wrapper">
+    {% for block in section.blocks %}
+      <div class="viora-benefit-item" {{ block.shopify_attributes }}>
+        <div class="viora-benefit-icon">
+          {% if block.settings.icon_image != blank %}
+            <img
+              src="{{ block.settings.icon_image | image_url: width: 140 }}"
+              alt="{{ block.settings.title | escape }}"
+              loading="lazy"
+            >
+          {% endif %}
+        </div>
+
+        <div class="viora-benefit-text">
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.viora-benefits-section {
+  width: 100%;
+  background: #f8f2e8;
+  padding: 18px 4%;
+  border-top: 1px solid rgba(80, 50, 25, 0.15);
+  border-bottom: 1px solid rgba(80, 50, 25, 0.15);
+}
+
+.viora-benefits-wrapper {
+  max-width: 1250px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.viora-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 22px;
+  border-right: 1px solid rgba(80, 50, 25, 0.18);
+}
+
+.viora-benefit-item:last-child {
+  border-right: none;
+}
+
+.viora-benefit-icon {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(80, 50, 25, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.viora-benefit-icon img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.viora-benefit-text h3 {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #23170f;
+}
+
+.viora-benefit-text p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: #4c3b2d;
+}
+
+/* Tablet */
+@media screen and (max-width: 990px) {
+  .viora-benefits-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .viora-benefit-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(80, 50, 25, 0.15);
+  }
+
+  .viora-benefit-item:nth-child(2),
+  .viora-benefit-item:nth-child(4) {
+    border-right: none;
+  }
+
+  .viora-benefit-item:nth-child(3),
+  .viora-benefit-item:nth-child(4) {
+    border-bottom: none;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+  .viora-benefits-section {
+    padding: 14px 14px;
+  }
+
+  .viora-benefits-wrapper {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .viora-benefit-item {
+    border: 1px solid rgba(80, 50, 25, 0.14) !important;
+    border-radius: 16px;
+    background: #fffaf2;
+    padding: 14px 14px;
+    gap: 12px;
+    box-shadow: 0 8px 18px rgba(80, 50, 25, 0.06);
+  }
+
+  .viora-benefit-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+  }
+
+  .viora-benefit-icon img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .viora-benefit-text h3 {
+    font-size: 12px;
+  }
+
+  .viora-benefit-text p {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+}
+
+/* Very small mobile */
+@media screen and (max-width: 380px) {
+  .viora-benefit-item {
+    align-items: flex-start;
+  }
+
+  .viora-benefit-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+
+  .viora-benefit-icon img {
+    width: 31px;
+    height: 31px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Viora Icon Benefits",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Circle icon image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "High Protein"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Up to 10g protein per jar to help keep you full and energized."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Viora Icon Benefits",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "High Protein",
+            "text": "Up to 10g protein per jar to help keep you full and energized."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Low Sugar",
+            "text": "Balanced sweetness with real flavor without feeling too heavy."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Creamy Texture",
+            "text": "Smooth, thick, and naturally creamy inspired by Vietnamese yogurt."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Versatile & Delicious",
+            "text": "Perfect as a snack, with fruit, granola, or in your favorite recipes."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

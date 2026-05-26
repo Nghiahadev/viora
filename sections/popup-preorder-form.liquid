@@ -1,0 +1,451 @@
+<section class="yf-popup-page">
+  <div class="yf-announcement">
+    {{ section.settings.announcement }}
+  </div>
+
+  <div class="yf-hero">
+    <h1>{{ section.settings.heading }}</h1>
+
+    <h2>{{ section.settings.event_title }}</h2>
+
+    <p>{{ section.settings.event_info }}</p>
+
+    {% if section.settings.button_link != blank %}
+      <a href="{{ section.settings.button_link }}" class="yf-btn">
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+
+    <small>{{ section.settings.note }}</small>
+  </div>
+
+  <div class="yf-form-card">
+    <h3>{{ section.settings.form_heading }}</h3>
+
+    {% form 'contact' %}
+      <input type="hidden" name="contact[tags]" value="Preorder Notification">
+
+      <label>What is your name? *</label>
+      <input type="text" name="contact[name]" required>
+
+      <label>What is your email? *</label>
+      <input type="email" name="contact[email]" required>
+
+      <label>What is your phone number?</label>
+      <input type="tel" name="contact[phone]">
+
+      <p class="yf-small-text">
+        {{ section.settings.privacy_text }}
+      </p>
+
+      <label class="yf-location-title">
+        Where are you located? *
+      </label>
+
+      <div class="yf-checkbox-group">
+        {% for block in section.blocks %}
+          <label class="yf-check">
+            <input
+              type="checkbox"
+              name="contact[Location - {{ block.settings.location }}]"
+              value="Yes"
+            >
+            <span>{{ block.settings.location }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="yf-submit">
+        {{ section.settings.submit_text }} →
+      </button>
+
+      {% if form.posted_successfully? %}
+        <p class="yf-success">
+          Thank you! We will notify you about future yogurt pop-ups.
+        </p>
+      {% endif %}
+
+      {% if form.errors %}
+        <p class="yf-error">
+          Please check the form and try again.
+        </p>
+      {% endif %}
+    {% endform %}
+  </div>
+</section>
+
+<style>
+.yf-popup-page {
+  background: #f7f4ef;
+  min-height: 100vh;
+  padding-bottom: 100px;
+  color: #111;
+  font-family: Arial, sans-serif;
+}
+
+/* Announcement */
+.yf-announcement {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+/* Hero */
+.yf-hero {
+  text-align: center;
+  padding: 70px 20px 40px;
+}
+
+.yf-hero h1 {
+  font-size: clamp(40px, 6vw, 68px);
+  margin: 0 0 40px;
+  font-family: Georgia, serif;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.yf-hero h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  margin-bottom: 10px;
+  font-family: Georgia, serif;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.yf-hero p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.yf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  padding: 14px 34px;
+  border-radius: 999px;
+  font-weight: 800;
+  transition: .25s ease;
+}
+
+.yf-btn:hover {
+  background: #ff4f87;
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.yf-hero small {
+  display: block;
+  margin-top: 25px;
+  color: #999;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Form Card */
+.yf-form-card {
+  width: min(760px, calc(100% - 32px));
+  margin: 40px auto 0;
+  background: #fff;
+  border-radius: 18px;
+  padding: 40px;
+  box-shadow: 0 15px 50px rgba(0,0,0,.08);
+}
+
+.yf-form-card h3 {
+  text-align: center;
+  font-size: clamp(28px, 4vw, 42px);
+  margin-top: 0;
+  margin-bottom: 35px;
+  font-weight: 900;
+}
+
+/* Labels */
+.yf-form-card label {
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 22px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Inputs */
+.yf-form-card input[type="text"],
+.yf-form-card input[type="email"],
+.yf-form-card input[type="tel"] {
+  width: 100%;
+  max-width: 320px;
+  height: 46px;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 15px;
+  background: #fff;
+}
+
+.yf-form-card input:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.06);
+}
+
+/* Small text */
+.yf-small-text {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+/* Location */
+.yf-location-title {
+  margin-top: 30px !important;
+  font-size: 20px !important;
+}
+
+.yf-checkbox-group {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.yf-check {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin: 0 !important;
+  font-weight: 500 !important;
+  cursor: pointer;
+}
+
+.yf-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #000;
+}
+
+/* Button */
+.yf-submit {
+  margin-top: 30px;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.yf-submit:hover {
+  background: #ff4f87;
+  transform: translateY(-2px);
+}
+
+/* Success */
+.yf-success {
+  margin-top: 20px;
+  color: green;
+  font-weight: 700;
+}
+
+/* Error */
+.yf-error {
+  margin-top: 20px;
+  color: red;
+  font-weight: 700;
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+  .yf-hero {
+    padding: 50px 20px 25px;
+  }
+
+  .yf-form-card {
+    padding: 28px 22px;
+  }
+
+  .yf-form-card input[type="text"],
+  .yf-form-card input[type="email"],
+  .yf-form-card input[type="tel"] {
+    max-width: 100%;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "626 Popup Preorder",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Announcement Bar",
+      "default": "NEW VIETNAMESE COFFEE YOGURT POP-UP • LIMITED PRE-ORDERS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "626 YOGURT POP-UPS 🍦"
+    },
+    {
+      "type": "text",
+      "id": "event_title",
+      "label": "Event Title",
+      "default": "ROSEMEAD • SAN GABRIEL VALLEY"
+    },
+    {
+      "type": "text",
+      "id": "event_info",
+      "label": "Event Info",
+      "default": "SATURDAY • LIMITED PICKUP • 626 AREA"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Pre-order"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Small Note",
+      "default": "All pre-orders are final. Pickup details will be emailed after purchase."
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form Heading",
+      "default": "Get notified about pre-orders"
+    },
+    {
+      "type": "textarea",
+      "id": "privacy_text",
+      "label": "Privacy Text",
+      "default": "Your information is safe with us. We only send yogurt launch updates, events, and early access drops."
+    },
+    {
+      "type": "text",
+      "id": "submit_text",
+      "label": "Submit Button",
+      "default": "Pre-order"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "location",
+      "name": "Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location Name",
+          "default": "626: Rosemead"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "626 Popup Preorder",
+      "blocks": [
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: Rosemead"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: El Monte"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: South El Monte"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: Monterey Park"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: Alhambra"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: San Gabriel"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: Temple City"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: Arcadia"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: West Covina"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "626: Pomona"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "Los Angeles"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "Orange County"
+          }
+        },
+        {
+          "type": "location",
+          "settings": {
+            "location": "Outside Southern California"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

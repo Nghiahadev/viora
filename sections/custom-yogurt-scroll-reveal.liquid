@@ -1,0 +1,202 @@
+<section class="hero-wrap">
+  <div class="scroll-zone" id="zone-{{ section.id }}">
+    <div class="sticky-stage">
+      
+      <div class="hero-media" id="hero-{{ section.id }}">
+        {% if section.settings.hero_image != blank %}
+          <img
+            id="heroImg-{{ section.id }}"
+            src="{{ section.settings.hero_image | image_url: width: 2400 }}"
+            alt="{{ section.settings.heading | escape }}"
+          >
+        {% else %}
+          <img
+            id="heroImg-{{ section.id }}"
+            src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=2400&q=80"
+            alt="{{ section.settings.heading | escape }}"
+          >
+        {% endif %}
+
+        <div class="overlay"></div>
+
+        <div class="hero-text" id="heroText-{{ section.id }}">
+          <div class="kicker">{{ section.settings.kicker }}</div>
+          <h1>{{ section.settings.heading }}</h1>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-wrap { padding: 0; }
+
+  .scroll-zone {
+    height: 250vh;
+    position: relative;
+  }
+
+  .sticky-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-media {
+    position: relative;
+    width: 72vw;
+    height: 58vh;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+    will-change: width, height, transform, border-radius;
+    transform: scale(0.94); 
+  }
+
+  .hero-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1) translateY(5%);
+    will-change: transform;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0.6)
+    );
+  }
+
+  .hero-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    padding: 40px;
+    opacity: 0;
+    transform: translateY(30px);
+    will-change: opacity, transform;
+  }
+
+  .hero-text .kicker {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+
+  .hero-text h1 {
+    margin: 0;
+    font-size: clamp(32px, 6vw, 80px);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 768px) {
+    .hero-media {
+      width: 90vw;
+      height: 60vh;
+    }
+  }
+</style>
+
+<script>
+  const zone{{ section.id | replace: '-', '' }} = document.getElementById("zone-{{ section.id }}");
+  const hero{{ section.id | replace: '-', '' }} = document.getElementById("hero-{{ section.id }}");
+  const img{{ section.id | replace: '-', '' }}  = document.getElementById("heroImg-{{ section.id }}");
+  const text{{ section.id | replace: '-', '' }} = document.getElementById("heroText-{{ section.id }}");
+
+  const clamp{{ section.id | replace: '-', '' }} = (v, min, max) => Math.min(Math.max(v, min), max);
+  const lerp{{ section.id | replace: '-', '' }}  = (a, b, t) => a + (b - a) * t;
+
+  function update{{ section.id | replace: '-', '' }}() {
+    const rect = zone{{ section.id | replace: '-', '' }}.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const vw = window.innerWidth;
+
+    const total = rect.height - vh;
+    const scrolled = clamp{{ section.id | replace: '-', '' }}(-rect.top, 0, total);
+    const p = total > 0 ? scrolled / total : 0;
+
+    const startW = vw * 0.72;
+    const endW   = vw;
+    const w = lerp{{ section.id | replace: '-', '' }}(startW, endW, p);
+
+    const startH = vh * 0.58;
+    const endH   = vh;
+    const h = lerp{{ section.id | replace: '-', '' }}(startH, endH, p);
+
+    hero{{ section.id | replace: '-', '' }}.style.width  = `${w}px`;
+    hero{{ section.id | replace: '-', '' }}.style.height = `${h}px`;
+
+    const scale = lerp{{ section.id | replace: '-', '' }}(0.94, 1.0, p);
+    const radius = lerp{{ section.id | replace: '-', '' }}(24, 0, p);
+    
+    hero{{ section.id | replace: '-', '' }}.style.transform = `scale(${scale})`;
+    hero{{ section.id | replace: '-', '' }}.style.borderRadius = `${radius}px`;
+
+    const imgScale = lerp{{ section.id | replace: '-', '' }}(1.1, 1.0, p);
+    const imgY = lerp{{ section.id | replace: '-', '' }}(5, 0, p);
+    img{{ section.id | replace: '-', '' }}.style.transform = `scale(${imgScale}) translateY(${imgY}%)`;
+
+    const textP = clamp{{ section.id | replace: '-', '' }}((p - 0.2) / 0.4, 0, 1);
+    text{{ section.id | replace: '-', '' }}.style.opacity = textP;
+    text{{ section.id | replace: '-', '' }}.style.transform = `translateY(${lerp{{ section.id | replace: '-', '' }}(30, 0, textP)}px)`;
+
+    const shadowAlpha = lerp{{ section.id | replace: '-', '' }}(0.2, 0, p);
+    hero{{ section.id | replace: '-', '' }}.style.boxShadow = `0 40px 100px rgba(0, 0, 0, ${shadowAlpha})`;
+  }
+
+  window.addEventListener("scroll", () => {
+    requestAnimationFrame(update{{ section.id | replace: '-', '' }});
+  }, { passive: true });
+  
+  window.addEventListener("resize", update{{ section.id | replace: '-', '' }});
+
+  update{{ section.id | replace: '-', '' }}();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Yogurt Scroll",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Yogurt image"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Small text",
+      "default": "Fresh Yogurt"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Creamy yogurt made fresh daily"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Yogurt Scroll"
+    }
+  ]
+}
+{% endschema %}

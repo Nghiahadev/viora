@@ -1,0 +1,339 @@
+<style>
+  .viora-glow-section {
+    background: #050505;
+    padding: 80px 20px;
+    font-family: Inter, Arial, sans-serif;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .viora-glow-container {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .viora-glow-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .viora-glow-subtitle {
+    display: block;
+    font-size: clamp(32px, 5vw, 58px);
+    font-style: italic;
+    font-weight: 300;
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+
+  .viora-glow-title {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    margin: 10px 0 0;
+    font-weight: 900;
+    color: #ffffff !important;
+  }
+
+  .viora-glow-cards {
+    position: relative;
+  }
+
+  .viora-glow-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .viora-card {
+    --hue: 42;
+    --saturation: 95%;
+    --lightness: 58%;
+    --hsl: var(--hue), var(--saturation), var(--lightness);
+
+    position: relative;
+    min-height: 245px;
+    padding: 28px;
+    border-radius: 24px;
+    background: #171717;
+    border: 1px solid rgba(255,255,255,0.16);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 350ms ease;
+  }
+
+  .viora-card:nth-child(1) { --hue: 190; --saturation: 90%; --lightness: 55%; }
+  .viora-card:nth-child(2) { --hue: 42; --saturation: 95%; --lightness: 58%; }
+  .viora-card:nth-child(3) { --hue: 28; --saturation: 95%; --lightness: 55%; }
+  .viora-card:nth-child(4) { --hue: 18; --saturation: 95%; --lightness: 58%; }
+  .viora-card:nth-child(5) { --hue: 145; --saturation: 80%; --lightness: 55%; }
+  .viora-card:nth-child(6) { --hue: 50; --saturation: 95%; --lightness: 62%; }
+  .viora-card:nth-child(7) { --hue: 110; --saturation: 75%; --lightness: 55%; }
+
+  .viora-card-feature {
+    grid-column: span 2;
+  }
+
+  .viora-card-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+  }
+
+  .viora-card-feature .viora-card-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    text-align: left;
+  }
+
+  .viora-card img {
+    max-width: 125px;
+    max-height: 115px;
+    object-fit: contain;
+    margin-bottom: 22px;
+    transition: 350ms ease;
+  }
+
+  .viora-card-feature img {
+    max-width: 170px;
+    max-height: 150px;
+    margin-bottom: 0;
+  }
+
+  .viora-card h3 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 900;
+    color: #ffffff !important;
+  }
+
+  .viora-card p {
+    margin: 12px 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.9) !important;
+  }
+
+ .viora-card:hover {
+  /* NO JUMP */
+  transform: translateY(0);
+
+  background: hsla(var(--hsl), 0.12);
+
+  border-color: hsla(var(--hsl), 0.8);
+
+  box-shadow:
+    0 0 30px hsla(var(--hsl), 0.25),
+    0 20px 50px rgba(0,0,0,0.45);
+}
+
+  .viora-card:hover img {
+    transform: scale(1.12);
+  }
+
+  .viora-glow-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--opacity, 0);
+    -webkit-mask: radial-gradient(
+      26rem 26rem at var(--x) var(--y),
+      #000 1%,
+      transparent 55%
+    );
+    mask: radial-gradient(
+      26rem 26rem at var(--x) var(--y),
+      #000 1%,
+      transparent 55%
+    );
+    transition: 300ms opacity ease;
+    z-index: 5;
+  }
+
+  .viora-glow-overlay .viora-card {
+    background: hsla(var(--hsl), 0.18);
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: 1px solid hsla(var(--hsl), 0.9);
+    outline-offset: -1px;
+    transform: none !important;
+  }
+
+  .viora-glow-overlay .viora-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 35px hsla(var(--hsl), 0.45);
+    pointer-events: none;
+  }
+
+  .viora-glow-overlay .viora-card-content {
+    opacity: 0;
+  }
+
+  @media (max-width: 1000px) {
+    .viora-glow-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .viora-card-feature {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .viora-glow-section {
+      padding: 55px 16px;
+    }
+
+    .viora-glow-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .viora-card-feature {
+      grid-column: span 1;
+    }
+
+    .viora-card-feature .viora-card-content {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .viora-card {
+      min-height: 220px;
+      padding: 24px;
+    }
+  }
+</style>
+
+<section class="viora-glow-section">
+  <div class="viora-glow-container">
+
+    <div class="viora-glow-header">
+      <span class="viora-glow-subtitle">What’s inside</span>
+      <h2 class="viora-glow-title">Ingredients that matter</h2>
+    </div>
+
+    <div class="viora-glow-cards">
+      <div class="viora-glow-inner">
+
+        <div class="viora-card viora-card-feature">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/water-new.png?v=1778589231" alt="Water">
+            <div>
+              <h3>Water</h3>
+              <p>Crafted with pure water to create the smooth, creamy texture that makes every spoonful of VIORA yogurt rich, refreshing, and perfectly balanced.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="viora-card">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/Tapioca_starch.png?v=1778589231" alt="Tapioca starch">
+            <h3>Tapioca starch</h3>
+          </div>
+        </div>
+
+        <div class="viora-card">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/Coffee_Powder.png?v=1778589231" alt="Coffee Powder">
+            <h3>Coffee Powder</h3>
+          </div>
+        </div>
+
+        <div class="viora-card">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/Caramel.png?v=1778589231" alt="Caramel color">
+            <h3>Caramel color</h3>
+          </div>
+        </div>
+
+        <div class="viora-card">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/Cellulose_gum.png?v=1778589231" alt="Cellulose gum">
+            <h3>Cellulose gum</h3>
+          </div>
+        </div>
+
+        <div class="viora-card">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/sugar.png?v=1778589231" alt="Sugar">
+            <h3>Sugar</h3>
+          </div>
+        </div>
+
+        <div class="viora-card">
+          <div class="viora-card-content">
+            <img src="https://cdn.shopify.com/s/files/1/0832/2085/7082/files/Tea_Essence.png?v=1778589231" alt="Tea Essence">
+            <h3>Tea Essence</h3>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="viora-glow-overlay viora-glow-inner"></div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cardsWrapper = document.querySelector(".viora-glow-cards");
+  const cards = Array.from(document.querySelectorAll(".viora-glow-inner:not(.viora-glow-overlay) .viora-card"));
+  const overlay = document.querySelector(".viora-glow-overlay");
+
+  if (!cardsWrapper || !overlay || cards.length === 0) return;
+
+  overlay.innerHTML = "";
+
+  cards.forEach(function(card) {
+    const clone = card.cloneNode(true);
+    overlay.appendChild(clone);
+  });
+
+  function syncOverlaySizes() {
+    const overlayCards = overlay.querySelectorAll(".viora-card");
+
+    cards.forEach(function(card, index) {
+      const rect = card.getBoundingClientRect();
+      if (overlayCards[index]) {
+        overlayCards[index].style.height = rect.height + "px";
+      }
+    });
+  }
+
+  syncOverlaySizes();
+  window.addEventListener("resize", syncOverlaySizes);
+
+  cardsWrapper.addEventListener("pointermove", function(e) {
+    const rect = cardsWrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    overlay.style.setProperty("--opacity", "1");
+    overlay.style.setProperty("--x", x + "px");
+    overlay.style.setProperty("--y", y + "px");
+  });
+
+  cardsWrapper.addEventListener("pointerleave", function() {
+    overlay.style.setProperty("--opacity", "0");
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Glowing Ingredients",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Glowing Ingredients"
+    }
+  ]
+}
+{% endschema %}
